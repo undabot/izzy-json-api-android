@@ -1,0 +1,22 @@
+ext.versions = [
+        gson         : "2.8.5",
+        jackson      : "2.9.6",
+        retrofit     : "2.6.0",
+
+        mockitoKotlin: "1.5.0",
+        junit        : "4.12"
+]
+
+ext.libraries = [
+        kotlinStdLib       : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version",
+        kotlinReflect      : "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version",
+        gson               : "com.google.code.gson:gson:$versions.gson",
+        jacksonCore        : "com.fasterxml.jackson.core:jackson-core:$versions.jackson",
+        jacksonAnnotations : "com.fasterxml.jackson.core:jackson-annotations:$versions.jackson",
+        jacksonDatabind    : "com.fasterxml.jackson.core:jackson-databind:$versions.jackson",
+        jacksonModuleKotlin: "com.fasterxml.jackson.module:jackson-module-kotlin:$versions.jackson",
+        retrofit           : "com.squareup.retrofit2:retrofit:$versions.retrofit",
+
+        junit              : "junit:junit:$versions.junit",
+        mockitoKotlin      : "com.nhaarman:mockito-kotlin:$versions.mockitoKotlin"
+]

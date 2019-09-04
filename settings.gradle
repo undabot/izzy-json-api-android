@@ -1,0 +1,6 @@
+rootProject.name = 'izzy'
+include 'parser'
+include 'gson-adapter'
+include 'jackson-adapter'
+include 'retrofit-converter'
+

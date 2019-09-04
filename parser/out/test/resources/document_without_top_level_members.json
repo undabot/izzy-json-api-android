@@ -1,0 +1,16 @@
+{
+  "links": {
+    "self": "self-url",
+    "next": null,
+    "last": {
+      "href": "url-last",
+      "meta": null
+    },
+    "related": {
+      "href": "related-url",
+      "meta": {
+        "meta_key": "meta value"
+      }
+    }
+  }
+}

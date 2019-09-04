@@ -1,0 +1,115 @@
+{
+  "data": [
+    {
+      "id": "1",
+      "type": "articles",
+      "attributes": {
+        "title": "Title",
+        "description": "Desc",
+        "customObject": {
+          "value": "Hello"
+        },
+        "keywords": [
+          "key1",
+          "key2"
+        ]
+      },
+      "meta": {
+        "hint": "Hint"
+      },
+      "links": {
+        "self": "self-url",
+        "next": null,
+        "last": {
+          "href": "url-last",
+          "meta": null
+        },
+        "related": {
+          "href": "related-url",
+          "meta": {
+            "meta_key": "meta value"
+          }
+        }
+      },
+      "relationships": {
+        "coauthors": {
+          "data": [
+            {
+              "id": "2",
+              "type": "persons"
+            },
+            {
+              "id": "3",
+              "type": "persons"
+            }
+          ]
+        },
+        "author": {
+          "data": {
+            "id": "1",
+            "type": "persons"
+          }
+        }
+      }
+    }
+  ],
+  "included": [
+    {
+      "id": "1",
+      "type": "persons",
+      "attributes": {
+        "name": "Pero"
+      },
+      "links": {
+        "self": "self-url",
+        "next": null,
+        "last": {
+          "href": "url-last",
+          "meta": null
+        },
+        "related": {
+          "href": "related-url",
+          "meta": {
+            "meta_key": "meta value"
+          }
+        }
+      }
+    },
+    {
+      "id": "2",
+      "type": "persons",
+      "attributes": {
+        "name": "Kanta"
+      },
+      "relationships": {
+        "favoriteArticle": {
+          "data": {
+            "id": "1",
+            "type": "articles"
+          }
+        }
+      },
+      "meta": {
+        "copyright": "Copyright 2015 Example Corp.",
+        "author": {
+          "name": "John"
+        }
+      }
+    },
+    {
+      "id": "3",
+      "type": "persons",
+      "attributes": {
+        "name": "Metlica"
+      },
+      "relationships": {
+        "favoriteArticle": {
+          "data": {
+            "id": "1",
+            "type": "articles"
+          }
+        }
+      }
+    }
+  ]
+}

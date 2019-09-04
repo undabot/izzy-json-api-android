@@ -1,0 +1,51 @@
+{
+  "meta": {
+  },
+  "included": [
+    {
+      "id": "1",
+      "type": "persons",
+      "attributes": {
+        "name": "Pero"
+      },
+      "relationships": {
+        "favoriteArticle": {
+          "data": {
+            "id": "1",
+            "type": "articles"
+          }
+        }
+      }
+    },
+    {
+      "id": "2",
+      "type": "persons",
+      "attributes": {
+        "name": "Kanta"
+      },
+      "relationships": {
+        "favoriteArticle": {
+          "data": {
+            "id": "1",
+            "type": "articles"
+          }
+        }
+      }
+    },
+    {
+      "id": "3",
+      "type": "persons",
+      "attributes": {
+        "name": "Metlica"
+      },
+      "relationships": {
+        "favoriteArticle": {
+          "data": {
+            "id": "1",
+            "type": "articles"
+          }
+        }
+      }
+    }
+  ]
+}

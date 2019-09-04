@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "meta_key": "meta_value",
+    "customObject": {
+      "value": "Hello"
+    }
+  },
+  "data": {
+    "id": "1",
+    "type": "articles",
+    "attributes": {
+      "title": "Title",
+      "description": "Desc",
+      "customObject": {
+        "value": "Hello"
+      },
+      "keywords": [
+        "key1",
+        "key2"
+      ]
+    },
+    "meta": {
+      "hint": "Hint"
+    },
+    "relationships": {
+      "coauthors": {
+        "data": [
+          {
+            "id": "2",
+            "type": "persons"
+          },
+          {
+            "id": "3",
+            "type": "persons"
+          }
+        ]
+      },
+      "author": {
+        "data": {
+          "id": "1",
+          "type": "persons"
+        }
+      }
+    }
+  },
+  "included": [
+    {
+      "id": "1",
+      "type": "persons",
+      "attributes": {
+        "name": "Pero"
+      },
+      "relationships": {
+        "favoriteArticle": {
+          "data": {
+            "id": "1",
+            "type": "articles"
+          }
+        }
+      }
+    },
+    {
+      "id": "2",
+      "type": "persons",
+      "attributes": {
+        "name": "Kanta"
+      },
+      "relationships": {
+        "favoriteArticle": {
+          "data": {
+            "id": "1",
+            "type": "articles"
+          }
+        }
+      }
+    },
+    {
+      "id": "3",
+      "type": "persons",
+      "attributes": {
+        "name": "Metlica"
+      },
+      "relationships": {
+        "favoriteArticle": {
+          "data": {
+            "id": "1",
+            "type": "articles"
+          }
+        }
+      }
+    }
+  ]
+}

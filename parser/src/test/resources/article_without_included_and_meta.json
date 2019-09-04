@@ -1,0 +1,1 @@
+{"data":{"id":"1","type":"articles","attributes":{"title":"Title","description":"Desc","customObject":{"value":"Hello"},"keywords":["key1","key2"]},"relationships":{"author":{"data":{"id":"1","type":"persons"}},"coauthors":{"data":[{"id":"2","type":"persons"},{"id":"3","type":"persons"}]}}}}

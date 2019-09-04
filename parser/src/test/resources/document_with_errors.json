@@ -1,0 +1,27 @@
+{
+  "errors": [
+    {
+      "id": "20",
+      "code": "123",
+      "title": "Error title"
+    },
+    {
+      "detail": "Error details",
+      "status": "400",
+      "source": {
+        "pointer": "/data/attributes/key"
+      },
+      "meta": {
+        "food": "hamburger",
+        "drink": "water"
+      }
+    },
+    {
+      "detail": "Some details",
+      "source": {
+        "parameter": "Some source parameter",
+        "pointer": "/data/attributes/name"
+      }
+    }
+  ]
+}
