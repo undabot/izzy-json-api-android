@@ -86,7 +86,7 @@ class Izzy(private val izzyJsonParser: IzzyJsonParser) {
 
     private fun linksFrom(jsonTree: JsonElements) = deserializeLinks.from(jsonTree)
 
-    private fun metaFrom(jsonTree: JsonElements) = deserializeMeta.from(jsonTree)
+    private fun metaFrom(jsonTree: JsonElements) = deserializeMeta.fromRoot(jsonTree)
 
     private fun validate(jsonTree: JsonElements) = validateJsonDocument.from(jsonTree)
 }
