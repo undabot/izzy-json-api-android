@@ -5,7 +5,7 @@ import com.undabot.izzy.parser.JsonElements
 import java.lang.reflect.Field
 
 class RelationshipFields {
-    private val map = LinkedHashMap<ResourceID, Field>()
+    private val map = mutableListOf<Pair<ResourceID, Field>>()
 
     fun addToPool(relationshipData: JsonElements, relationshipField: Field) {
         if (relationshipData.isArray())
@@ -48,11 +48,11 @@ class RelationshipFields {
                 }
     }
 
-    fun add(resourceUnique: ResourceID, field: Field) = map.put(resourceUnique, field)
+    fun add(resourceUnique: ResourceID, field: Field) = map.add(resourceUnique to field)
 
     fun hasRelationships() = map.isNotEmpty()
 
     fun get() = map
 
-    fun fieldOrNull(resourceUnique: ResourceID) = map[resourceUnique]!!
+    fun fieldOrNull(resourceUnique: ResourceID) = map.find { it.first == resourceUnique }
 }

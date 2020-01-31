@@ -54,7 +54,7 @@ class AddResourceToPoolShould {
     }
 
     private fun `class of relationship from pool`() =
-            pool.resourceForId(ResourceID(testId, type))!!.second.fieldOrNull(ResourceID("10", "persons")).type
+            pool.resourceForId(ResourceID(testId, type))!!.second.fieldOrNull(ResourceID("10", "persons"))!!.second.type
 
     private fun `class from pool`() = pool.resourceForId(ResourceID(testId, type))!!.first.classData
 }
