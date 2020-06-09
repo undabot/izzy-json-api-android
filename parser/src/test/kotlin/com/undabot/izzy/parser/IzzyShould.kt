@@ -86,7 +86,10 @@ class IzzyShould {
         article2.author = person3
         article2.coauthors = arrayListOf(person1)
 
-        person1.favoriteArticle = article1
+        person1.apply {
+            favoriteArticle = article1
+            supervisor = person2
+        }
         person2.favoriteArticle = article1
         person3.favoriteArticle = article1
     }
@@ -101,6 +104,7 @@ class IzzyShould {
             result.data?.author equals person1
             result.data?.coauthors equals arrayListOf(person2, person3)
             result.data?.author?.favoriteArticle equals article1
+            result.data?.author?.supervisor equals person2
         }
     }
 
@@ -115,6 +119,8 @@ class IzzyShould {
             result.data!![1].author equals person1
             result.data!![0].author?.favoriteArticle equals article1
             result.data!![1].author?.favoriteArticle equals article1
+            result.data!![0].author?.supervisor equals null
+            result.data!![1].author?.supervisor equals person2
         }
     }
 

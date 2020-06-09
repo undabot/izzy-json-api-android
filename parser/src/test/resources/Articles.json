@@ -82,7 +82,13 @@
                         "id":"1",
                         "type":"articles"
                      }
+                 },
+               "supervisor": {
+                 "data": {
+                   "id":"2",
+                   "type":"persons"
                  }
+               }
              }
         },
         {
