@@ -14,6 +14,7 @@ class GsonElements(private val json: com.google.gson.JsonElement?) : JsonElement
     }
 
     override fun stringFor(key: String): String? {
+        izzyLogger.lastElementSearchedIn(key, json.toString())
         return json?.asJsonObject!![key]?.asString
     }
 
@@ -40,6 +41,7 @@ class GsonElements(private val json: com.google.gson.JsonElement?) : JsonElement
     }
 
     override fun jsonElement(keyToFind: String): JsonElements {
+        izzyLogger.lastElementSearchedIn(keyToFind, json.toString())
         return GsonElements(json?.asJsonObject?.get(keyToFind))
     }
 
@@ -48,6 +50,7 @@ class GsonElements(private val json: com.google.gson.JsonElement?) : JsonElement
     }
 
     override fun jsonElementsArray(keyToFind: String): List<JsonElements> {
+        izzyLogger.lastElementSearchedIn(keyToFind, json.toString())
         return json?.asJsonObject?.getAsJsonArray(keyToFind)!!.map { GsonElements(it) }
     }
 }
