@@ -4,6 +4,9 @@ import com.undabot.izzy.models.Errors
 import com.undabot.izzy.models.IzzyResource
 import com.undabot.izzy.models.JsonDocument
 
+var izzyLogger: IzzyLogger = IzzyLogger.DEFAULT
+
+@Suppress("TooGenericExceptionCaught")
 class Izzy(private val izzyJsonParser: IzzyJsonParser) {
 
     private val deserializeLinks = DeserializeLinks()
@@ -18,24 +21,29 @@ class Izzy(private val izzyJsonParser: IzzyJsonParser) {
      * */
 
     fun <T : IzzyResource> deserializeToDocument(json: String): JsonDocument<T> {
-        val jsonTree = izzyJsonParser.parseToJsonElements(json)
-        validate(jsonTree)
+        try {
+            val jsonTree = izzyJsonParser.parseToJsonElements(json)
+            validate(jsonTree)
 
-        var resource: T? = null
-        var errors: Errors? = null
+            var resource: T? = null
+            var errors: Errors? = null
 
-        if (jsonTree.has(DATA)) {
-            resource = deserializeData.forSingleResource(jsonTree)
-        } else if (jsonTree.has(ERRORS)) {
-            errors = deserializeErrors.from(jsonTree)
+            if (jsonTree.has(DATA)) {
+                resource = deserializeData.forSingleResource(jsonTree)
+            } else if (jsonTree.has(ERRORS)) {
+                errors = deserializeErrors.from(jsonTree)
+            }
+
+            return JsonDocument(
+                data = resource,
+                links = linksFrom(jsonTree),
+                errors = errors,
+                meta = metaFrom(jsonTree)
+            )
+        } catch (e: Exception) {
+            izzyLogger.log("Exception on -->deserializeToDocument", e)
+            throw e
         }
-
-        return JsonDocument(
-            data = resource,
-            links = linksFrom(jsonTree),
-            errors = errors,
-            meta = metaFrom(jsonTree)
-        )
     }
 
     /**
@@ -43,24 +51,29 @@ class Izzy(private val izzyJsonParser: IzzyJsonParser) {
      *  @param json json-API compliant json in string format.
      * */
     fun <T : IzzyResource> deserializeToCollection(json: String): JsonDocument<List<T>> {
-        val jsonTree = izzyJsonParser.parseToJsonElements(json)
-        validate(jsonTree)
+        try {
+            val jsonTree = izzyJsonParser.parseToJsonElements(json)
+            validate(jsonTree)
 
-        var resourceCollection: List<T>? = null
-        var errors: Errors? = null
+            var resourceCollection: List<T>? = null
+            var errors: Errors? = null
 
-        if (jsonTree.has(DATA)) {
-            resourceCollection = deserializeData.forResourceCollection(jsonTree)
-        } else if (jsonTree.has(ERRORS)) {
-            errors = deserializeErrors.from(jsonTree)
+            if (jsonTree.has(DATA)) {
+                resourceCollection = deserializeData.forResourceCollection(jsonTree)
+            } else if (jsonTree.has(ERRORS)) {
+                errors = deserializeErrors.from(jsonTree)
+            }
+
+            return JsonDocument(
+                data = resourceCollection,
+                links = linksFrom(jsonTree),
+                errors = errors,
+                meta = metaFrom(jsonTree)
+            )
+        } catch (e: Exception) {
+            izzyLogger.log("Exception on -->deserializeToCollection", e)
+            throw e
         }
-
-        return JsonDocument(
-            data = resourceCollection,
-            links = linksFrom(jsonTree),
-            errors = errors,
-            meta = metaFrom(jsonTree)
-        )
     }
 
     /**
@@ -68,10 +81,15 @@ class Izzy(private val izzyJsonParser: IzzyJsonParser) {
      * @param item item to serialize.
      */
     fun <T : IzzyResource> serializeItem(item: T): String {
-        val document = JsonDocument(
-            ResourceToSerializableDocumentMapper(RelationshipFieldMapper()).mapFrom(item)
-        )
-        return izzyJsonParser.documentToJson(document).replace(nullableField(), nullValue())
+        try {
+            val document = JsonDocument(
+                ResourceToSerializableDocumentMapper(RelationshipFieldMapper()).mapFrom(item)
+            )
+            return izzyJsonParser.documentToJson(document).replace(nullableField(), nullValue())
+        } catch (e: Exception) {
+            izzyLogger.log("Exception on -->serializeItem", e)
+            throw e
+        }
     }
 
     /**
@@ -80,9 +98,19 @@ class Izzy(private val izzyJsonParser: IzzyJsonParser) {
      */
 
     fun <T : IzzyResource> serializeItemCollection(item: List<T>): String {
-        val mapper = ResourceToSerializableDocumentMapper(RelationshipFieldMapper())
-        val document = JsonDocument(item.map { mapper.mapFrom(it) })
-        return izzyJsonParser.documentCollectionToJson(document).replace(nullableField(), nullValue())
+        try {
+            val mapper = ResourceToSerializableDocumentMapper(RelationshipFieldMapper())
+            val document = JsonDocument(item.map { mapper.mapFrom(it) })
+            return izzyJsonParser.documentCollectionToJson(document)
+                .replace(nullableField(), nullValue())
+        } catch (e: Exception) {
+            izzyLogger.log("Exception on -->serializeItemCollection", e)
+            throw e
+        }
+    }
+
+    fun loggingLevel(level: IzzyLogger.Level) {
+        izzyLogger.level = level
     }
 
     @SuppressWarnings("FunctionOnlyReturningConstant")
