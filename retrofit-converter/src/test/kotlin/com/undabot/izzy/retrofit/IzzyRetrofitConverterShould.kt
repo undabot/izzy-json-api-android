@@ -43,16 +43,19 @@ class IzzyRetrofitConverterShould {
         assert(converter.stringConverter(documentResourceType(), null, null) == null)
     }
 
-    @Test(expected = IllegalArgumentException::class)
-    fun `throw exception when response body converter is requested with unsupported type`() {
-        converter.responseBodyConverter(CustomObject::class.java, null, null)
+    @Test
+    fun `return invalid response body converter for invalid object`() {
+        val result = converter.responseBodyConverter(CustomObject::class.java, null, null)
+        assert(result is IzzyInvalidJsonResponseBodyConverter)
     }
 
     private fun resourceCollectionType(): Type = emptyList<Article>()::class.java.rawType
 
     private fun resourceType(): Type = Article::class.java.rawType
 
-    private fun documentCollectionType(): Type = object : TypeReference<JsonDocument<List<Article>>>() {}.type
+    private fun documentCollectionType(): Type =
+        object : TypeReference<JsonDocument<List<Article>>>() {}.type
 
-    private fun documentResourceType(): Type = object : TypeReference<JsonDocument<Article>>() {}.type
+    private fun documentResourceType(): Type =
+        object : TypeReference<JsonDocument<Article>>() {}.type
 }
