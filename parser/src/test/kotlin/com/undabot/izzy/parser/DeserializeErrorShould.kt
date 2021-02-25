@@ -113,6 +113,13 @@ class DeserializeErrorShould {
         Then { actualError.meta equals hashMapOf("key" to "value") }
     }
 
+    @Test
+    fun `deserialize 'customProperties' from element to 'meta' in error`() {
+        Given { `json error element as`("""{"customError":{"key":"value"}}""") }
+        When { `deserialize is requested`() }
+        Then { actualError.customProperties equals hashMapOf("customError" to hashMapOf("key" to "value")) }
+    }
+
     private fun `json error element as`(json: String) {
         errorElement = JacksonParser().parseToJsonElements(json)
     }
