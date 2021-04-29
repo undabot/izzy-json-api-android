@@ -209,3 +209,24 @@ interface ApiService {
     ): Response<JsonDocument<ArticleResource>>
 }
 ```
+
+# Contributing
+
+Please take the time to carefully read the following guide. These rules help make the best out of your time, the code reviewer's time and the general consistency of the project.
+
+## General rules
+
+All contributions are handled via Pull Requests (PRs). Your PR _must_ target the [develop](https://github.com/undabot/izzy-json-api-android/tree/develop) branch. Your PR is required to pass all tests and contain clear description. By making contributions to this project you give permission for your code to be used under the same [license](./LICENSE).
+
+## Reporting Issues
+
+A great way to contribute to the project is to send a detailed issue when you encounter a problem. We always appreciate a well-written, thorough bug report. Before creating new issue make sure to go through issue list and look for potential duplicate of your issue. If you find a match in issues list please leave a vote or additional comment to help us prioritize most common issues.
+
+Be sure to include in your issue:
+
+- **Descriptive title** - use keywords so others can find your bug (avoiding duplicates)
+- **Steps** to trigger the problem that are specific, and repeatable
+- **What happens** when you follow the steps, and what you expected to happen instead. Include the exact text of any error messages if applicable.
+- **Version** of json-api-android used
+- **Did this work in a previous version?** If so, also provide the version that it worked in.
+- **Device type** & **OS version** where this issue can be reproduced.
