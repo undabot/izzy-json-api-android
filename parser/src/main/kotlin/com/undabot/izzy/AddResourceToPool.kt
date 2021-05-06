@@ -16,7 +16,8 @@ class AddResourceToPool(private val pool: DataPool) {
      *  Adds resource and it's metadata and relationship data to the DataPool.
      *
      * @param resource a resource object which we'll be adding to pool
-     * @param relationshipsJsonObject part of the JSON ("relationships" object) that has all of the relationship data for this resource
+     * @param relationshipsJsonObject part of the JSON ("relationships" object) that has
+     * all of the relationship data for this resource
      * @param type type for this resource
      *
      */

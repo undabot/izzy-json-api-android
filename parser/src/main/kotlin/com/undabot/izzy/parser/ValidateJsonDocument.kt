@@ -31,7 +31,10 @@ class ValidateJsonDocument {
         throwExceptionWith("The members 'data' and 'errors' MUST NOT coexist in the same document.")
 
     private fun throwMissingTopLevelMembersException() =
-        throwExceptionWith("A document MUST contain at least one of the following top-level members: 'data', 'errors', 'meta'")
+        throwExceptionWith(
+            "A document MUST contain at least one of the following " +
+                "top-level members: 'data', 'errors', 'meta'"
+        )
 
     private fun throwRootNotObjectException() =
         throwExceptionWith("Root must be JSON object.")

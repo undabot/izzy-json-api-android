@@ -85,7 +85,8 @@ class Izzy(private val izzyJsonParser: IzzyJsonParser) {
         return izzyJsonParser.documentCollectionToJson(document).replace(nullableField(), nullValue())
     }
 
-    private fun nullValue() = "null"
+    @SuppressWarnings("FunctionOnlyReturningConstant")
+    private fun nullValue(): String = "null"
 
     private fun nullableField() = "\"" + DataWrapper.NULLABLE_FIELD + "\""
 

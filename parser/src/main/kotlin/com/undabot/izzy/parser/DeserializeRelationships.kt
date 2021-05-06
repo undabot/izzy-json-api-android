@@ -46,12 +46,17 @@ class DeserializeRelationships(
         RelationshipFields().apply {
             resource::class.java.annotatedWith(Relationship::class.java)
                 .forEach { relationshipField ->
-                    val relationshipName = relationshipField.getAnnotation(Relationship::class.java).name
+                    val relationshipName = relationshipField
+                        .getAnnotation(Relationship::class.java)
+                        .name
 
                     if (relationshipObject.hasNonNull(relationshipName)) {
-                        val relationshipData = getRelationshipDataFrom(relationshipObject, relationshipName)
+                        val relationshipData =
+                            getRelationshipDataFrom(relationshipObject, relationshipName)
                         if (relationshipData.isArray()) {
-                            relationshipData.asArray().forEach { addRelationshipWithoutDataToPool(it, pool) }
+                            relationshipData.asArray().forEach {
+                                addRelationshipWithoutDataToPool(it, pool)
+                            }
                         } else if (relationshipData.isObject()) {
                             addRelationshipWithoutDataToPool(relationshipData, pool)
                         }
@@ -94,7 +99,8 @@ class DeserializeRelationships(
      *  Adds resource and it's metadata and relationship data to the DataPool.
      *
      * @param resource a resource object which we'll be adding to pool
-     * @param relationshipsJsonObject part of the JSON ("relationships" object) that has all of the relationship data for this resource
+     * @param relationshipsJsonObject part of the JSON ("relationships" object) that has
+     * all of the relationship data for this resource
      * @param type type for this resource
      *
      */
@@ -113,7 +119,9 @@ class DeserializeRelationships(
                 relationships.forEach { kClass ->
                     extractResourceRelationships(kClass, relationshipsJsonObject, resource, pool)
                 }
-            } catch (e: KotlinReflectionInternalError) {}
+            } catch (e: KotlinReflectionInternalError) {
+                // Do Nothing
+            }
         }
 
         pool.put(id, Resource(ClassInstance(resource::class.java, resource), relationshipFields))
@@ -171,6 +179,7 @@ class DeserializeRelationships(
     private fun getRelationshipDataFrom(relationshipsObject: JsonElements, name: String) =
         relationshipsObject.jsonElement(name).jsonElement(DATA)
 
+    @SuppressWarnings("TooGenericExceptionCaught")
     private fun typeFor(resType: String) = try {
         izzyJsonParser.izzyConfiguration().typeFor(resType)
     } catch (e: Exception) {
