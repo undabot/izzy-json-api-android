@@ -1,0 +1,14 @@
+// Documentation: https://github.com/arturbosch/detekt
+
+apply plugin: 'io.gitlab.arturbosch.detekt'
+
+detekt {
+//    failFast = true //when we enable this for some reason no reports is generated :(
+    config = files("$rootDir/quality/detekt.yml")
+
+    reports {
+        html.enabled = true
+        txt.enabled = true
+        xml.enabled = false
+    }
+}
