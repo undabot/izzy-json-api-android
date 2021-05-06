@@ -26,10 +26,11 @@ allprojects {
 }
 
 subprojects {
+    apply plugin: 'kotlin'
+    apply plugin: 'maven'
     apply from: '../dependencies.gradle'
     apply from: rootProject.file('quality/ktlint.gradle')
     apply from: rootProject.file('quality/detekt.gradle')
-    apply plugin: 'maven-publish'
     group = 'com.github.undabot'
 
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
