@@ -1,11 +1,15 @@
 package com.undabot.izzy.parser
 
-import com.undabot.izzy.*
+import com.undabot.izzy.And
+import com.undabot.izzy.Given
+import com.undabot.izzy.Then
+import com.undabot.izzy.When
 import com.undabot.izzy.annotations.Relationship
 import com.undabot.izzy.model.Article
 import com.undabot.izzy.model.Person
 import com.undabot.izzy.model.Weapon
 import com.undabot.izzy.models.ResourceID
+import com.undabot.izzy.nonNullFields
 import com.undabot.izzy.parser.DataWrapper.Companion.NULLABLE_FIELD
 import org.junit.Test
 
@@ -28,11 +32,13 @@ class RelationshipFieldMapperShould {
     }
 
     private val articleWithAuthors = Article("testArticle")
-            .apply {
-                id = testId
-                coauthors = listOf(testPerson.apply { id = testId },
-                        secondPerson.apply { id = testIdSecond })
-            }
+        .apply {
+            id = testId
+            coauthors = listOf(
+                testPerson.apply { id = testId },
+                secondPerson.apply { id = testIdSecond }
+            )
+        }
 
     private var mapper: RelationshipFieldMapper? = RelationshipFieldMapper()
 
@@ -41,8 +47,8 @@ class RelationshipFieldMapperShould {
         Given { personWithArticle }
         When {
             result = personWithArticle.nonNullFields()
-                    .groupBy { it.first.isAnnotationPresent(Relationship::class.java) }[true]
-                    .let { mapper!!.map(it!!) }
+                .groupBy { it.first.isAnnotationPresent(Relationship::class.java) }[true]
+                .let { mapper!!.map(it!!) }
         }
         Then {
             And { assert(result!!.contains(Pair("favoriteArticle", DataWrapper(ResourceID(testId, "articles"))))) }
@@ -54,14 +60,24 @@ class RelationshipFieldMapperShould {
         Given { articleWithAuthors }
         When {
             result = articleWithAuthors.nonNullFields()
-                    .groupBy { it.first.isAnnotationPresent(Relationship::class.java) }[true]
-                    .let { mapper!!.map(it!!) }
+                .groupBy { it.first.isAnnotationPresent(Relationship::class.java) }[true]
+                .let { mapper!!.map(it!!) }
         }
         Then {
             And {
-                assert(result!!.contains(Pair("coauthors",
-                        DataWrapper(arrayListOf(ResourceID(testId, "persons"),
-                                ResourceID(testIdSecond, "persons"))))))
+                assert(
+                    result!!.contains(
+                        Pair(
+                            "coauthors",
+                            DataWrapper(
+                                arrayListOf(
+                                    ResourceID(testId, "persons"),
+                                    ResourceID(testIdSecond, "persons")
+                                )
+                            )
+                        )
+                    )
+                )
             }
         }
     }
@@ -71,8 +87,8 @@ class RelationshipFieldMapperShould {
         val article = Article().apply { coauthors = arrayListOf() }
 
         val result = article.nonNullFields()
-                .groupBy { it.first.isAnnotationPresent(Relationship::class.java) }[true]
-                .let { mapper!!.map(it!!) }
+            .groupBy { it.first.isAnnotationPresent(Relationship::class.java) }[true]
+            .let { mapper!!.map(it!!) }
 
         Then { assert(result.contains("coauthors" to DataWrapper(arrayListOf<Article>()))) }
     }
@@ -82,8 +98,8 @@ class RelationshipFieldMapperShould {
         val weapon: Weapon = Weapon().apply { shield = null }
 
         val result = weapon.nonNullFields()
-                .groupBy { it.first.isAnnotationPresent(Relationship::class.java) }[true]
-                .let { mapper!!.map(it!!) }
+            .groupBy { it.first.isAnnotationPresent(Relationship::class.java) }[true]
+            .let { mapper!!.map(it!!) }
         Then { assert(result.contains("shield" to DataWrapper(NULLABLE_FIELD))) }
     }
 }

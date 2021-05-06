@@ -21,8 +21,10 @@ class RelationshipFields {
      * We'll later use this data to set that field in the instance object to value of the resolved relationship
      */
     private fun addToPoolFromObject(relationshipData: JsonElements, relationshipField: Field) {
-        add(resourceIDFrom(relationshipData, relationshipField.type.getAnnotation(Type::class.java).type),
-                relationshipField)
+        add(
+            resourceIDFrom(relationshipData, relationshipField.type.getAnnotation(Type::class.java).type),
+            relationshipField
+        )
     }
 
     /**
@@ -31,7 +33,7 @@ class RelationshipFields {
      * @param type Type of this resource
      */
     private fun resourceIDFrom(relationshipData: JsonElements, type: String) =
-            ResourceID(IzzyResource.from(relationshipData).id!!, type)
+        ResourceID(IzzyResource.from(relationshipData).id!!, type)
 
     /**
      * Used to add a relationship that is a collection
@@ -42,10 +44,10 @@ class RelationshipFields {
 
     private fun addToPoolFromArray(relationshipData: JsonElements, relationshipField: Field) {
         relationshipData.asArray()
-                .map { Pair(IzzyResource.from(it), it.stringFor("type")) }
-                .forEach { res ->
-                    add(ResourceID(res.first.id!!, res.second!!), relationshipField)
-                }
+            .map { Pair(IzzyResource.from(it), it.stringFor("type")) }
+            .forEach { res ->
+                add(ResourceID(res.first.id!!, res.second!!), relationshipField)
+            }
     }
 
     fun add(resourceUnique: ResourceID, field: Field) = map.add(resourceUnique to field)

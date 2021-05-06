@@ -90,16 +90,18 @@ class DeserializeLinksShould {
     }
 
     private fun expectedFullLinks() = Links(
-            self = Link("self-url"),
-            first = Link("first-url"),
-            last = Link("last-url"),
-            prev = Link("prev-url"),
-            next = Link("next-url"),
-            related = Link(
-                    href = "related-url",
-                    meta = mapOf("related" to "meta",
-                            "key" to "value")
+        self = Link("self-url"),
+        first = Link("first-url"),
+        last = Link("last-url"),
+        prev = Link("prev-url"),
+        next = Link("next-url"),
+        related = Link(
+            href = "related-url",
+            meta = mapOf(
+                "related" to "meta",
+                "key" to "value"
             )
+        )
     )
 
     private fun `deserialize is requested`() {

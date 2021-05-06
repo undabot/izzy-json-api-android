@@ -63,8 +63,11 @@ class RelationshipFieldsShould {
             elements = JacksonParser().parseToJsonElements(SINGLE_ARTICLE.asResource())
         }
         When {
-            fields.addToPool(elements.jsonElement(DATA), Article::class.java.annotatedWith(Relationship::class.java)
-                    .first { !it.type.isCollection() })
+            fields.addToPool(
+                elements.jsonElement(DATA),
+                Article::class.java.annotatedWith(Relationship::class.java)
+                    .first { !it.type.isCollection() }
+            )
         }
         Then {
             assert(fields.get().size == 1)

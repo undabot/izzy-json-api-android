@@ -16,7 +16,7 @@ class DataPool {
      *  @param resource a pair of the ClassInstance metadata and RelationshipFields data about relationships this resource has
      */
     fun put(id: ResourceID, resource: Resource) =
-            dataTable.put(id, resource)
+        dataTable.put(id, resource)
 
     fun resourceForId(id: ResourceID) = dataTable[id]
 

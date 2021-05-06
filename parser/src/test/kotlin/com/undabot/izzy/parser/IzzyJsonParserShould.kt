@@ -34,11 +34,15 @@ abstract class IzzyJsonParserShould(val parser: IzzyJsonParser) {
     fun `include data member in collection serialization when it's not null`() {
         Given {
             document = JsonDocument<List<SerializableDocument>>(
-                    data = arrayListOf(SerializableDocument(
-                            id = "10",
-                            type = "articles",
-                            attributes = mapOf("attributeKey" to "attributeValue"),
-                            relationships = mapOf("relationshipName" to DataWrapper(CustomObject("name"))))))
+                data = arrayListOf(
+                    SerializableDocument(
+                        id = "10",
+                        type = "articles",
+                        attributes = mapOf("attributeKey" to "attributeValue"),
+                        relationships = mapOf("relationshipName" to DataWrapper(CustomObject("name")))
+                    )
+                )
+            )
         }
         When { result = parser.documentCollectionToJson(document as JsonDocument<List<SerializableDocument>>) }
         Then { result equals """{"data":[{"id":"10","type":"articles","attributes":{"attributeKey":"attributeValue"},"relationships":{"relationshipName":{"data":{"value":"name"}}}}]}""" }
@@ -48,11 +52,13 @@ abstract class IzzyJsonParserShould(val parser: IzzyJsonParser) {
     fun `include data member in serialization when it's not null`() {
         Given {
             document = JsonDocument(
-                    data = SerializableDocument(
-                            id = "10",
-                            type = "articles",
-                            attributes = mapOf("attributeKey" to "attributeValue"),
-                            relationships = mapOf("relationshipName" to DataWrapper(CustomObject("name")))))
+                data = SerializableDocument(
+                    id = "10",
+                    type = "articles",
+                    attributes = mapOf("attributeKey" to "attributeValue"),
+                    relationships = mapOf("relationshipName" to DataWrapper(CustomObject("name")))
+                )
+            )
         }
         When { result = parser.documentToJson(document as JsonDocument<SerializableDocument>) }
         Then { result equals """{"data":{"id":"10","type":"articles","attributes":{"attributeKey":"attributeValue"},"relationships":{"relationshipName":{"data":{"value":"name"}}}}}""" }

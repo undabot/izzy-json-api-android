@@ -30,10 +30,12 @@ class Izzy(private val izzyJsonParser: IzzyJsonParser) {
             errors = deserializeErrors.from(jsonTree)
         }
 
-        return JsonDocument(data = resource,
-                links = linksFrom(jsonTree),
-                errors = errors,
-                meta = metaFrom(jsonTree))
+        return JsonDocument(
+            data = resource,
+            links = linksFrom(jsonTree),
+            errors = errors,
+            meta = metaFrom(jsonTree)
+        )
     }
 
     /**
@@ -53,10 +55,12 @@ class Izzy(private val izzyJsonParser: IzzyJsonParser) {
             errors = deserializeErrors.from(jsonTree)
         }
 
-        return JsonDocument(data = resourceCollection,
-                links = linksFrom(jsonTree),
-                errors = errors,
-                meta = metaFrom(jsonTree))
+        return JsonDocument(
+            data = resourceCollection,
+            links = linksFrom(jsonTree),
+            errors = errors,
+            meta = metaFrom(jsonTree)
+        )
     }
 
     /**
@@ -65,7 +69,8 @@ class Izzy(private val izzyJsonParser: IzzyJsonParser) {
      */
     fun <T : IzzyResource> serializeItem(item: T): String {
         val document = JsonDocument(
-                ResourceToSerializableDocumentMapper(RelationshipFieldMapper()).mapFrom(item))
+            ResourceToSerializableDocumentMapper(RelationshipFieldMapper()).mapFrom(item)
+        )
         return izzyJsonParser.documentToJson(document).replace(nullableField(), nullValue())
     }
 
