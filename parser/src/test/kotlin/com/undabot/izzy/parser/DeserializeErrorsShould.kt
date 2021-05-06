@@ -42,7 +42,8 @@ class DeserializeErrorsShould {
             `json document as`("""{"errors":[
                                         {"detail":"error detail", "code":"3"},
                                         {"source":{"parameter":"parameter"},"title": "error title"},
-                                        {"meta":{"some_key":"some value"}, "status":"400"}
+                                        {"meta":{"some_key":"some value"}, "status":"400"},
+                                        {"custom_properties":{"custom_key":"some value"}}
                                     ]}""")
         }
         When { `deserialize is requested`() }
@@ -53,7 +54,8 @@ class DeserializeErrorsShould {
             arrayListOf(
                     Error(detail = "error detail", code = "3"),
                     Error(source = Source(parameter = "parameter"), title = "error title"),
-                    Error(meta = hashMapOf("some_key" to "some value"), status = "400"))
+                    Error(meta = hashMapOf("some_key" to "some value"), status = "400"),
+                    Error(customProperties = hashMapOf("custom_properties" to hashMapOf("custom_key" to "some value"))))
     )
 
     private fun `deserialize is requested`() {

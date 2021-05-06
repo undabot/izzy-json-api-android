@@ -10,6 +10,9 @@ import com.undabot.izzy.models.RelationshipFields
 import com.undabot.izzy.models.Resource
 import com.undabot.izzy.models.ResourceID
 import com.undabot.izzy.typeFromResource
+import kotlin.reflect.KClass
+import kotlin.reflect.full.allSuperclasses
+import kotlin.reflect.jvm.internal.KotlinReflectionInternalError
 
 class DeserializeRelationships(
     private val izzyJsonParser: IzzyJsonParser,
@@ -96,20 +99,38 @@ class DeserializeRelationships(
     ) {
         val id = ResourceID(resource.id!!, type)
         val relationshipFields = RelationshipFields().apply {
-            resource::class.java.annotatedWith(Relationship::class.java)
-                    .forEach { relationshipField ->
-                        val relationshipName = relationshipField.getAnnotation(Relationship::class.java).name
+            extractResourceRelationships(resource::class, relationshipsJsonObject, resource, pool)
 
-                        if (relationshipsJsonObject.has(relationshipName)) {
-                            val relationshipData = getRelationshipDataFrom(relationshipsJsonObject, relationshipName)
-                            relationshipField.isAccessible = true
-                            addToPool(relationshipData, relationshipField)
-                            putResourceRelationshipsToPool(resource, relationshipsJsonObject, pool)
-                        }
-                    }
+            try {
+                val relationships = resource::class.allSuperclasses
+                relationships.forEach { kClass ->
+                    extractResourceRelationships(kClass, relationshipsJsonObject, resource, pool)
+                }
+            } catch (e: KotlinReflectionInternalError) {}
         }
 
         pool.put(id, Resource(ClassInstance(resource::class.java, resource), relationshipFields))
+    }
+
+    private fun <T : IzzyResource> RelationshipFields.extractResourceRelationships(
+        kClass: KClass<*>,
+        relationshipsJsonObject: JsonElements,
+        resource: T,
+        pool: DataPool
+    ) {
+        kClass.java.annotatedWith(Relationship::class.java)
+            .forEach { relationshipField ->
+                val relationshipName =
+                    relationshipField.getAnnotation(Relationship::class.java).name
+
+                if (relationshipsJsonObject.has(relationshipName)) {
+                    val relationshipData =
+                        getRelationshipDataFrom(relationshipsJsonObject, relationshipName)
+                    relationshipField.isAccessible = true
+                    addToPool(relationshipData, relationshipField)
+                    putResourceRelationshipsToPool(resource, relationshipsJsonObject, pool)
+                }
+            }
     }
 
     private fun resourceWithoutRelationships(resId: ResourceID, classInstance: ClassInstance, pool: DataPool) {

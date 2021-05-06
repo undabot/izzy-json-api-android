@@ -5,6 +5,9 @@ import com.undabot.izzy.models.IzzyResource
 import com.undabot.izzy.models.JsonDocument
 import com.undabot.izzy.parser.Izzy
 import com.undabot.izzy.rawType
+import com.undabot.izzy.retrofit.IzzyRetrofitConverter.JsonType.COLLECTION
+import com.undabot.izzy.retrofit.IzzyRetrofitConverter.JsonType.SINGLE
+import com.undabot.izzy.retrofit.IzzyRetrofitConverter.JsonType.UNKNOWN
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Converter
@@ -21,10 +24,11 @@ class IzzyRetrofitConverter(val izzy: Izzy) : Converter.Factory() {
         annotations: Array<out Annotation>?,
         retrofit: Retrofit?
     ): Converter<ResponseBody, *>? =
-        when (isDocumentWithCollection(type)) {
-            true -> IzzyCollectionResponseBodyConverter<IzzyResource>(izzy)
-            false -> IzzyResponseBodyConverter<IzzyResource>(izzy)
-        }
+            when (getJsonType(type)) {
+                COLLECTION -> IzzyCollectionResponseBodyConverter<IzzyResource>(izzy)
+                SINGLE -> IzzyResponseBodyConverter<IzzyResource>(izzy)
+                UNKNOWN -> IzzyInvalidJsonResponseBodyConverter()
+            }
 
     override fun requestBodyConverter(
         type: Type,
@@ -32,10 +36,10 @@ class IzzyRetrofitConverter(val izzy: Izzy) : Converter.Factory() {
         methodAnnotations: Array<out Annotation>?,
         retrofit: Retrofit?
     ): Converter<*, RequestBody>? =
-        when (isResourceCollection(type)) {
-            true -> IzzyCollectionRequestBodyConverter<IzzyResource>(izzy)
-            false -> IzzyRequestBodyConverter<IzzyResource>(izzy)
-        }
+            when (isResourceCollection(type)) {
+                true -> IzzyCollectionRequestBodyConverter<IzzyResource>(izzy)
+                false -> IzzyRequestBodyConverter<IzzyResource>(izzy)
+            }
 
     // We don't handle string types so here we return null to let retrofit know and pass it to another converter
     override fun stringConverter(
@@ -44,15 +48,19 @@ class IzzyRetrofitConverter(val izzy: Izzy) : Converter.Factory() {
         retrofit: Retrofit?
     ): Converter<*, String>? = null
 
-    private fun isDocumentWithCollection(type: Type): Boolean =
-        if (isJsonDocument(type)) {
-            (type as ParameterizedType).actualTypeArguments[0].isCollection()
-        } else {
-            throw IllegalArgumentException(
-                "Unsupported type: $type!\nIt should be 'com.undabot.izzy.models.JsonDocument.'")
-        }
+    private fun getJsonType(type: Type): JsonType =
+            if (isJsonDocument(type)) {
+                val isJsonCollection = (type as ParameterizedType).actualTypeArguments[0].isCollection()
+                if (isJsonCollection) COLLECTION else SINGLE
+            } else {
+                UNKNOWN
+            }
 
     private fun isResourceCollection(type: Type) = type.isCollection()
 
     private fun isJsonDocument(type: Type): Boolean = type.rawType == jsonDocumentType
+
+    enum class JsonType {
+        COLLECTION, SINGLE, UNKNOWN
+    }
 }
