@@ -18,6 +18,9 @@ plugins {
     id "io.gitlab.arturbosch.detekt" version "1.16.0"
 }
 
+apply plugin: 'maven-publish'
+group = 'com.github.undabot'
+
 allprojects {
     repositories {
         jcenter()
