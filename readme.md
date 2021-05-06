@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/undabot/izzy-json-api-android/tree/master.svg?style=shield)](https://circleci.com/gh/undabot/izzy-json-api-android/tree/master)
+[![](https://jitpack.io/v/undabot/izzy-json-api-android.svg)](https://jitpack.io/#undabot/izzy-json-api-android)
 
 # JSON-API Docs
 
