@@ -7,5 +7,6 @@ data class Error(
     var title: String? = null,
     var detail: String? = null,
     var source: Source? = null,
-    var meta: Map<String, Any?>? = null
+    var meta: Map<String, Any?>? = null,
+    var customProperties: Map<String, Any?>? = null
 )

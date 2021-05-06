@@ -37,9 +37,9 @@ class RelationshipMatcher {
         poolItem.value
                 .second
                 .get()
-                .filterNot { it.value.type.isCollection() }
+                .filterNot { it.second.type.isCollection() }
                 .forEach { resource ->
-                    resource.value.set(poolItem.value.first.instance, pool.resourceForId(resource.key)?.first?.instance)
+                    resource.second.set(poolItem.value.first.instance, pool.resourceForId(resource.first)?.first?.instance)
                 }
     }
 
@@ -81,7 +81,7 @@ class RelationshipMatcher {
         fromResource: MutableMap.MutableEntry<ResourceID, Resource>
     ): Map<ResourceID, Field> {
         return fromResource.value.second.get()
-                .filter { entry -> entry.value.type.isCollection() }
+                .filter { entry -> entry.second.type.isCollection() }.toMap()
     }
 
     private fun relationshipsFound(poolItem: MutableMap.MutableEntry<ResourceID, Resource>) =
