@@ -18,9 +18,6 @@ plugins {
     id "io.gitlab.arturbosch.detekt" version "1.16.0"
 }
 
-apply plugin: 'maven-publish'
-group = 'com.github.undabot'
-
 allprojects {
     repositories {
         jcenter()
@@ -32,6 +29,8 @@ subprojects {
     apply from: '../dependencies.gradle'
     apply from: rootProject.file('quality/ktlint.gradle')
     apply from: rootProject.file('quality/detekt.gradle')
+    apply plugin: 'maven-publish'
+    group = 'com.github.undabot'
 
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
         kotlinOptions {
