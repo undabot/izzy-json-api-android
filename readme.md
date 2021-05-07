@@ -15,15 +15,26 @@ We’ve built it to work together with your favourite JSON parsers, be it Gson, 
 
 ## How to set it up:
 
-1. Add the base parser to your build.gradle
-    ```
-    TODO insert gradle code here, maven code also?
-    ```
+1. Add JitPack repository to root project `build.gradle` file:
+```groovy
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
 
-2. Add a JSON-Parser module to your build.gradle (or implement your own/open a PR with one)
-    ```
-    TODO insert gradle code here, maven code also?
-    ```
+2. Add a JSON-Parser dependency to app/module level `build.gradle`
+
+Jackson:
+```groovy
+implementation 'com.github.undabot.izzy-json-api-android:jackson-adapter:<version>'
+```
+Gson
+```groovy
+implementation 'com.github.undabot.izzy-json-api-android:gson-adapter:<version>'
+```
 
 3. Register the types you want or need.
     - When you are setting up your instance of `Izzy`, you need to pass the `IzzyConfiguration` a list of classes (or just one) you're going to use with Izzy.
@@ -58,6 +69,10 @@ We’ve built it to work together with your favourite JSON parsers, be it Gson, 
     ```
 
 5. Add a Retrofit plugin if you use Retrofit (or don’t if you don’t)
+
+```groovy
+implementation 'com.github.undabot.izzy-json-api-android:retrofit-converter:<version>'
+```
 
 And you’re ready to be JSON-API Compliant!
 
