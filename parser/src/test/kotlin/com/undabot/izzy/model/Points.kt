@@ -15,7 +15,7 @@ data class Points(
     companion object {
         const val testJsonObject = "{\"first_name\": \"Ransom\",\n  \"points\": 78\n}"
         const val testJsonList = "{\"items\":[{\"first_name\": \"Ransom\",\n  \"points\": 78\n}," +
-                " {\n\"first_name\": \"Mechelle\",\n\"points\": 25\n}]}"
+            " {\n\"first_name\": \"Mechelle\",\n\"points\": 25\n}]}"
         val firstTestItem = Points().apply {
             firstName = "Ransom"
             points = "78"

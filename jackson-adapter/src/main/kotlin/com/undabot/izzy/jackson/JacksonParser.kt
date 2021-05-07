@@ -13,7 +13,7 @@ import com.undabot.izzy.parser.SerializableDocument
 class JacksonParser(
     private val izzyConfiguration: IzzyConfiguration = IzzyConfiguration(),
     private val objectMapper: ObjectMapper =
-    ObjectMapper().apply { this.setSerializationInclusion(JsonInclude.Include.NON_NULL) }
+        ObjectMapper().apply { this.setSerializationInclusion(JsonInclude.Include.NON_NULL) }
 ) : IzzyJsonParser {
 
     override fun documentCollectionToJson(serializableDocument: JsonDocument<List<SerializableDocument>>): String {
@@ -25,7 +25,7 @@ class JacksonParser(
     }
 
     private fun serialize(serializableDocument: JsonDocument<Any>) =
-            objectMapper.writer().writeValueAsString(serializableDocument).trim()
+        objectMapper.writer().writeValueAsString(serializableDocument).trim()
 
     override fun izzyConfiguration() = izzyConfiguration
 

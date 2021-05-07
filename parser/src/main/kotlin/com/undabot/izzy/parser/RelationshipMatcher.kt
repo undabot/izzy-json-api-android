@@ -15,15 +15,15 @@ class RelationshipMatcher {
      */
     fun match(pool: DataPool) {
         pool.entries
-                .forEach { poolItem ->
-                    if (relationshipsFound(poolItem)) {
-                        val collectionRelationships = extractCollectionBasedRelationships(poolItem)
-                        if (collectionRelationships.isNotEmpty()) {
-                            createCollectionRelationships(collectionRelationships, poolItem, pool)
-                        }
-                        createOneToOneRelationships(poolItem, pool)
+            .forEach { poolItem ->
+                if (relationshipsFound(poolItem)) {
+                    val collectionRelationships = extractCollectionBasedRelationships(poolItem)
+                    if (collectionRelationships.isNotEmpty()) {
+                        createCollectionRelationships(collectionRelationships, poolItem, pool)
                     }
+                    createOneToOneRelationships(poolItem, pool)
                 }
+            }
     }
 
     /**
@@ -35,12 +35,12 @@ class RelationshipMatcher {
      */
     private fun createOneToOneRelationships(poolItem: MutableMap.MutableEntry<ResourceID, Resource>, pool: DataPool) {
         poolItem.value
-                .second
-                .get()
-                .filterNot { it.second.type.isCollection() }
-                .forEach { resource ->
-                    resource.second.set(poolItem.value.first.instance, pool.resourceForId(resource.first)?.first?.instance)
-                }
+            .second
+            .get()
+            .filterNot { it.second.type.isCollection() }
+            .forEach { resource ->
+                resource.second.set(poolItem.value.first.instance, pool.resourceForId(resource.first)?.first?.instance)
+            }
     }
 
     /**
@@ -67,13 +67,15 @@ class RelationshipMatcher {
             else relevantResources[action.value] = mutableSetOf(action.key)
         }
         relevantResources.forEach { field ->
-            field.key.set(poolItem.value.first.instance,
-                    field.value.map { id ->
-                        pool.resourceForId(id)?.first?.instance
-                                .apply {
-                                    this!!.id = id.id
-                                }
-                    })
+            field.key.set(
+                poolItem.value.first.instance,
+                field.value.map { id ->
+                    pool.resourceForId(id)?.first?.instance
+                        .apply {
+                            this!!.id = id.id
+                        }
+                }
+            )
         }
     }
 
@@ -81,9 +83,9 @@ class RelationshipMatcher {
         fromResource: MutableMap.MutableEntry<ResourceID, Resource>
     ): Map<ResourceID, Field> {
         return fromResource.value.second.get()
-                .filter { entry -> entry.second.type.isCollection() }.toMap()
+            .filter { entry -> entry.second.type.isCollection() }.toMap()
     }
 
     private fun relationshipsFound(poolItem: MutableMap.MutableEntry<ResourceID, Resource>) =
-            poolItem.value.second.hasRelationships()
+        poolItem.value.second.hasRelationships()
 }

@@ -11,5 +11,5 @@ class IzzyResponseBodyConverter<T : IzzyResource>(
 ) : Converter<ResponseBody, JsonDocument<T>> {
 
     override fun convert(value: ResponseBody): JsonDocument<T> =
-            izzy.deserializeToDocument(value.charStream().readText())
+        izzy.deserializeToDocument(value.charStream().readText())
 }

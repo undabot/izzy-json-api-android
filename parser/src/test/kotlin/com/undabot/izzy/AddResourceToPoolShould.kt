@@ -21,14 +21,15 @@ class AddResourceToPoolShould {
     }
 
     private var relationshipJSON = JacksonParser(IzzyConfiguration()).parseToJsonElements(
-            """{
+        """{
                       "author":{
                         "data": {
                           "type": "persons",
                           "id": "10"
                         }
                       }
-                    }""")
+                    }"""
+    )
 
     private var type = "articles"
     private var parser = JacksonParser(IzzyConfiguration(arrayOf(Article::class.java, Person::class.java)))
@@ -54,7 +55,7 @@ class AddResourceToPoolShould {
     }
 
     private fun `class of relationship from pool`() =
-            pool.resourceForId(ResourceID(testId, type))!!.second.fieldOrNull(ResourceID("10", "persons"))!!.second.type
+        pool.resourceForId(ResourceID(testId, type))!!.second.fieldOrNull(ResourceID("10", "persons"))!!.second.type
 
     private fun `class from pool`() = pool.resourceForId(ResourceID(testId, type))!!.first.classData
 }

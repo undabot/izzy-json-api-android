@@ -29,9 +29,11 @@ class DeserializeRelationships(
                     putIncludedResourcesIntoThePool(jsonTree.jsonElementsArray(INCLUDED), this)
                 }
             }
-            resourceWithRelationships(resource,
-                    data.jsonElement(RELATIONSHIPS),
-                    resource.typeFromResource(), dataPool)
+            resourceWithRelationships(
+                resource,
+                data.jsonElement(RELATIONSHIPS),
+                resource.typeFromResource(), dataPool
+            )
             RelationshipMatcher().match(currentPool)
         }
     }
@@ -43,51 +45,62 @@ class DeserializeRelationships(
     ) {
         RelationshipFields().apply {
             resource::class.java.annotatedWith(Relationship::class.java)
-                    .forEach { relationshipField ->
-                        val relationshipName = relationshipField.getAnnotation(Relationship::class.java).name
+                .forEach { relationshipField ->
+                    val relationshipName = relationshipField
+                        .getAnnotation(Relationship::class.java)
+                        .name
 
-                        if (relationshipObject.hasNonNull(relationshipName)) {
-                            val relationshipData = getRelationshipDataFrom(relationshipObject, relationshipName)
-                            if (relationshipData.isArray()) {
-                                relationshipData.asArray().forEach { addRelationshipWithoutDataToPool(it, pool) }
-                            } else if (relationshipData.isObject()) {
-                                addRelationshipWithoutDataToPool(relationshipData, pool)
+                    if (relationshipObject.hasNonNull(relationshipName)) {
+                        val relationshipData =
+                            getRelationshipDataFrom(relationshipObject, relationshipName)
+                        if (relationshipData.isArray()) {
+                            relationshipData.asArray().forEach {
+                                addRelationshipWithoutDataToPool(it, pool)
                             }
+                        } else if (relationshipData.isObject()) {
+                            addRelationshipWithoutDataToPool(relationshipData, pool)
                         }
                     }
+                }
         }
     }
 
     private fun putIncludedResourcesIntoThePool(jsonData: List<JsonElements>, pool: DataPool) = pool
-            .apply {
-                jsonData.filter { hasRegisteredTypeFor(it.stringFor(TYPE)!!) }
-                        .forEach { resourceJson ->
-                            val id = resourceJson.stringFor(ID)!!
-                            val type = resourceJson.stringFor(TYPE)!!
-                            val realType = typeFor(type)
-                            val classInstance = ClassInstance(realType,
-                                    izzyJsonParser.parse(resourceJson.jsonElement(ATTRIBUTES).asJsonString(),
-                                            realType))
-                            val resource = classInstance.instance.apply {
-                                this.id = id
-                                this.links = deserializeLinks.from(resourceJson)
-                                this.meta = deserializeMeta.from(resourceJson)
-                            }
-                            if (resourceJson.has(RELATIONSHIPS))
-                                resourceWithRelationships(
-                                        resource,
-                                        resourceJson.jsonElement(RELATIONSHIPS),
-                                        type, pool)
-                            else
-                                resourceWithoutRelationships(ResourceID(id, type), classInstance, pool)
-                        }
-            }
+        .apply {
+            jsonData.filter { hasRegisteredTypeFor(it.stringFor(TYPE)!!) }
+                .forEach { resourceJson ->
+                    val id = resourceJson.stringFor(ID)!!
+                    val type = resourceJson.stringFor(TYPE)!!
+                    val realType = typeFor(type)
+                    val classInstance = ClassInstance(
+                        realType,
+                        izzyJsonParser.parse(
+                            resourceJson.jsonElement(ATTRIBUTES).asJsonString(),
+                            realType
+                        )
+                    )
+                    val resource = classInstance.instance.apply {
+                        this.id = id
+                        this.links = deserializeLinks.from(resourceJson)
+                        this.meta = deserializeMeta.from(resourceJson)
+                    }
+                    if (resourceJson.has(RELATIONSHIPS))
+                        resourceWithRelationships(
+                            resource,
+                            resourceJson.jsonElement(RELATIONSHIPS),
+                            type, pool
+                        )
+                    else
+                        resourceWithoutRelationships(ResourceID(id, type), classInstance, pool)
+                }
+        }
 
     /**
      *  Adds resource and it's metadata and relationship data to the DataPool.
      *
      * @param resource a resource object which we'll be adding to pool
-     * @param relationshipsJsonObject part of the JSON ("relationships" object) that has all of the relationship data for this resource
+     * @param relationshipsJsonObject part of the JSON ("relationships" object) that has
+     * all of the relationship data for this resource
      * @param type type for this resource
      *
      */
@@ -106,7 +119,9 @@ class DeserializeRelationships(
                 relationships.forEach { kClass ->
                     extractResourceRelationships(kClass, relationshipsJsonObject, resource, pool)
                 }
-            } catch (e: KotlinReflectionInternalError) {}
+            } catch (e: KotlinReflectionInternalError) {
+                // Do Nothing
+            }
         }
 
         pool.put(id, Resource(ClassInstance(resource::class.java, resource), relationshipFields))
@@ -148,18 +163,23 @@ class DeserializeRelationships(
         val realType = typeFor(typeString)
         val resourceId = ResourceID(id, typeString)
         if (pool.resourceForId(resourceId) == null) {
-            pool.put(ResourceID(id, typeString),
-                    Resource(ClassInstance(realType, realType.newInstance().apply { this.id = id }),
-                            RelationshipFields()))
+            pool.put(
+                ResourceID(id, typeString),
+                Resource(
+                    ClassInstance(realType, realType.newInstance().apply { this.id = id }),
+                    RelationshipFields()
+                )
+            )
         }
     }
 
     private fun hasRegisteredTypeFor(typeString: String) =
-            izzyJsonParser.izzyConfiguration().isRegistered(typeString)
+        izzyJsonParser.izzyConfiguration().isRegistered(typeString)
 
     private fun getRelationshipDataFrom(relationshipsObject: JsonElements, name: String) =
-            relationshipsObject.jsonElement(name).jsonElement(DATA)
+        relationshipsObject.jsonElement(name).jsonElement(DATA)
 
+    @SuppressWarnings("TooGenericExceptionCaught")
     private fun typeFor(resType: String) = try {
         izzyJsonParser.izzyConfiguration().typeFor(resType)
     } catch (e: Exception) {

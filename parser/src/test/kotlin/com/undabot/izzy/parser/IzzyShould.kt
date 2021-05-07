@@ -21,8 +21,8 @@ import com.undabot.izzy.PERSON_WITH_ARTICLE
 import com.undabot.izzy.SINGLE_ARTICLE
 import com.undabot.izzy.SINGLE_ARTICLE_WITHOUT_INCLUDED
 import com.undabot.izzy.SINGLE_ARTICLE_WITHOUT_INCLUDED_AND_META
-import com.undabot.izzy.SINGLE_ARTICLE_WITH_LINKS
 import com.undabot.izzy.SINGLE_ARTICLE_WITH_COAUTHORS_META
+import com.undabot.izzy.SINGLE_ARTICLE_WITH_LINKS
 import com.undabot.izzy.SINGLE_ARTICLE_WITH_UNKNOWN_RESOURCE
 import com.undabot.izzy.SINGLE_POLYMORPHIC
 import com.undabot.izzy.Then
@@ -111,7 +111,7 @@ class IzzyShould {
     @Test
     fun `deserialize json with collection to json document`() {
         val result = `izzy with classes`(Article::class.java, Person::class.java)
-                .deserializeToCollection<Article>(COLLECTION_ARTICLES.asResource())
+            .deserializeToCollection<Article>(COLLECTION_ARTICLES.asResource())
 
         Then {
             result.data equals arrayListOf(article2, article1)
@@ -127,7 +127,7 @@ class IzzyShould {
     @Test
     fun `deserialize to null object when json contains unknown type`() {
         val result = `izzy with classes`()
-                .deserializeToDocument<Article>(SINGLE_ARTICLE.asResource())
+            .deserializeToDocument<Article>(SINGLE_ARTICLE.asResource())
 
         Then { result.data equals null }
     }
@@ -135,7 +135,7 @@ class IzzyShould {
     @Test
     fun `deserialize to empty collection when json contains unknown types`() {
         val result = `izzy with classes`()
-                .deserializeToCollection<Article>(COLLECTION_ARTICLES.asResource())
+            .deserializeToCollection<Article>(COLLECTION_ARTICLES.asResource())
 
         Then { result.data?.isEmpty() equals true }
     }
@@ -143,14 +143,14 @@ class IzzyShould {
     @Test
     fun `deserialize to proper type when we declare return type as base Izzy resource`() {
         val result = `izzy with classes`(Article::class.java, Person::class.java)
-                .deserializeToDocument<IzzyResource>(SINGLE_ARTICLE.asResource())
+            .deserializeToDocument<IzzyResource>(SINGLE_ARTICLE.asResource())
         Then { assert(result.data is Article) }
     }
 
     @Test
     fun `deserialize proper relationship objects when relationship is declared as base resource`() {
         val result = `izzy with classes`(Player::class.java, Weapon::class.java, Shield::class.java)
-                .deserializeToDocument<Player>(SINGLE_POLYMORPHIC.asResource())
+            .deserializeToDocument<Player>(SINGLE_POLYMORPHIC.asResource())
 
         Then {
             assert(result.data?.items!![0] is Weapon)
@@ -179,7 +179,7 @@ class IzzyShould {
     @Test
     fun `deserialize relationships of single object as base objects with id's only when they are not in included `() {
         val result = `izzy with classes`(Article::class.java, Person::class.java)
-                .deserializeToDocument<Article>(SINGLE_ARTICLE_WITHOUT_INCLUDED.asResource())
+            .deserializeToDocument<Article>(SINGLE_ARTICLE_WITHOUT_INCLUDED.asResource())
         Then {
             result.data?.author equals Person().apply { id = "1" }
             result.data?.author?.id equals "1"
@@ -193,7 +193,7 @@ class IzzyShould {
     @Test
     fun `deserialize relationships of collection as base objects with id's only when they are not in included `() {
         val result = `izzy with classes`(Article::class.java, Person::class.java)
-                .deserializeToCollection<Article>(COLLECTION_ARTICLE_WITHOUT_INCLUDED.asResource())
+            .deserializeToCollection<Article>(COLLECTION_ARTICLE_WITHOUT_INCLUDED.asResource())
         Then {
             result.data!![0].author equals Person().apply { id = "1" }
             result.data!![0].author?.id equals "1"
@@ -207,7 +207,7 @@ class IzzyShould {
     @Test
     fun `deserialize single resource document with links`() {
         val result = `izzy with classes`(Article::class.java, Person::class.java)
-                .deserializeToDocument<Article>(DOCUMENT_WITH_LINKS.asResource())
+            .deserializeToDocument<Article>(DOCUMENT_WITH_LINKS.asResource())
         Then {
             result.links equals `expected links`()
             result.data equals article1
@@ -217,7 +217,7 @@ class IzzyShould {
     @Test
     fun `deserialize collection resources document with links`() {
         val result = `izzy with classes`(Article::class.java, Person::class.java)
-                .deserializeToCollection<Article>(DOCUMENT_COLLECTION_WITH_LINKS.asResource())
+            .deserializeToCollection<Article>(DOCUMENT_COLLECTION_WITH_LINKS.asResource())
         Then {
             result.links equals `expected links`()
             result.data equals arrayListOf(article2, article1)
@@ -267,7 +267,7 @@ class IzzyShould {
     @Test
     fun `ignore unknown relationships in single resource document`() {
         val result = `izzy with classes`(Article::class.java, Person::class.java)
-                .deserializeToDocument<Article>(SINGLE_ARTICLE_WITH_UNKNOWN_RESOURCE.asResource())
+            .deserializeToDocument<Article>(SINGLE_ARTICLE_WITH_UNKNOWN_RESOURCE.asResource())
         Then {
             result.data equals article1
             result.data?.author equals person1
@@ -279,7 +279,7 @@ class IzzyShould {
     @Test
     fun `ignore unknown relationships in resource collection document`() {
         val result = `izzy with classes`(Article::class.java, Person::class.java)
-                .deserializeToCollection<Article>(COLLECTION_ARTICLE_WITH_UNKNOWN_RESOURCE.asResource())
+            .deserializeToCollection<Article>(COLLECTION_ARTICLE_WITH_UNKNOWN_RESOURCE.asResource())
         Then {
             result.data!![0] equals article1
             result.data!![0].author equals person1
@@ -291,7 +291,7 @@ class IzzyShould {
     @Test
     fun `deserialize errors when document represents error response`() {
         val result = `izzy with classes`()
-                .deserializeToDocument<Article>(DOCUMENT_WITH_ERRORS.asResource())
+            .deserializeToDocument<Article>(DOCUMENT_WITH_ERRORS.asResource())
         Then {
             result.errors equals `expected errors`()
             result.data equals null
@@ -301,7 +301,7 @@ class IzzyShould {
     @Test
     fun `deserialize errors when document collection represents error response`() {
         val result = `izzy with classes`()
-                .deserializeToCollection<Article>(DOCUMENT_WITH_ERRORS.asResource())
+            .deserializeToCollection<Article>(DOCUMENT_WITH_ERRORS.asResource())
         Then {
             result.errors equals `expected errors`()
             result.data equals null
@@ -311,7 +311,7 @@ class IzzyShould {
     @Test
     fun `deserialize single resource document with meta`() {
         val result = `izzy with classes`(Article::class.java, Person::class.java)
-                .deserializeToDocument<Article>(DOCUMENT_WITH_META.asResource())
+            .deserializeToDocument<Article>(DOCUMENT_WITH_META.asResource())
         Then {
             result.meta equals `expected meta`()
             result.data equals article1
@@ -321,7 +321,7 @@ class IzzyShould {
     @Test
     fun `deserialize resource collection document with meta`() {
         val result = `izzy with classes`(Article::class.java, Person::class.java)
-                .deserializeToCollection<Article>(DOCUMENT_COLLECTION_WITH_META.asResource())
+            .deserializeToCollection<Article>(DOCUMENT_COLLECTION_WITH_META.asResource())
         Then {
             result.meta equals `expected meta`()
             result.data!![0] equals article1
@@ -384,7 +384,7 @@ class IzzyShould {
     @Test
     fun `deserialize links from resource in document with single resource`() {
         val result = `izzy with classes`(Article::class.java, Person::class.java)
-                .deserializeToDocument<Article>(SINGLE_ARTICLE_WITH_LINKS.asResource())
+            .deserializeToDocument<Article>(SINGLE_ARTICLE_WITH_LINKS.asResource())
         Then {
             result.data equals article1
             result.data?.links equals `expected links`()
@@ -394,7 +394,7 @@ class IzzyShould {
     @Test
     fun `deserialize links from resources in document with resource collection`() {
         val result = `izzy with classes`(Article::class.java, Person::class.java)
-                .deserializeToCollection<Article>(COLLECTION_ARTICLE_WITH_LINKS.asResource())
+            .deserializeToCollection<Article>(COLLECTION_ARTICLE_WITH_LINKS.asResource())
         Then {
             result.data!![0] equals article1
             result.data!![0].links equals `expected links`()
@@ -406,7 +406,8 @@ class IzzyShould {
 
         val result = `izzy with classes`(Weapon::class.java, Shield::class.java)
             .deserializeToDocument<Weapon>(
-                """{"data":{"type":"weapons","id":"1","relationships":{"shield":{"data":null}}}}""")
+                """{"data":{"type":"weapons","id":"1","relationships":{"shield":{"data":null}}}}"""
+            )
 
         Then { result.data equals Weapon().apply { id = "1" } }
     }
@@ -414,7 +415,7 @@ class IzzyShould {
     @Test
     fun `deserialize links from included resources in document with single resource`() {
         val result = `izzy with classes`(Article::class.java, Person::class.java)
-                .deserializeToDocument<Article>(SINGLE_ARTICLE_WITH_LINKS.asResource())
+            .deserializeToDocument<Article>(SINGLE_ARTICLE_WITH_LINKS.asResource())
         Then {
             result.data?.author?.links equals `expected links`()
         }
@@ -423,7 +424,7 @@ class IzzyShould {
     @Test
     fun `deserialize resource with null attributes to empty resource`() {
         val result = `izzy with classes`(Article::class.java, Person::class.java)
-                .deserializeToDocument<Person>(PERSON_WITHOUT_ATTRIBUTES.asResource())
+            .deserializeToDocument<Person>(PERSON_WITHOUT_ATTRIBUTES.asResource())
         Then {
             result.data equals Person().apply {
                 id = "1"
@@ -435,7 +436,7 @@ class IzzyShould {
     @Test
     fun `deserialize links from included resources in document with resource collection`() {
         val result = `izzy with classes`(Article::class.java, Person::class.java)
-                .deserializeToCollection<Article>(COLLECTION_ARTICLE_WITH_LINKS.asResource())
+            .deserializeToCollection<Article>(COLLECTION_ARTICLE_WITH_LINKS.asResource())
         Then {
             result.data!![0].author?.links equals `expected links`()
         }
@@ -470,7 +471,7 @@ class IzzyShould {
         val article = Article()
 
         val result = `izzy with classes`(Article::class.java, Person::class.java)
-                .serializeItem(article)
+            .serializeItem(article)
         Then { result equals """{"data":{"type":"articles"}}""" }
     }
 
@@ -479,7 +480,7 @@ class IzzyShould {
         val person = Person()
 
         val result = `izzy with classes`(Article::class.java, Person::class.java)
-                .serializeItem(person)
+            .serializeItem(person)
         Then { result equals """{"data":{"type":"persons"}}""" }
     }
 
@@ -488,7 +489,7 @@ class IzzyShould {
         val article = Article().apply { coauthors = arrayListOf() }
 
         val result = `izzy with classes`(Article::class.java, Person::class.java)
-                .serializeItem(article)
+            .serializeItem(article)
         Then { result equals """{"data":{"type":"articles","relationships":{"coauthors":{"data":[]}}}}""" }
     }
 
@@ -497,7 +498,7 @@ class IzzyShould {
         val weapon = Weapon()
 
         val result = `izzy with classes`(Weapon::class.java, Shield::class.java)
-                .serializeItem(weapon)
+            .serializeItem(weapon)
 
         Then { result equals """{"data":{"type":"weapons","relationships":{"shield":{"data":null}}}}""" }
     }
@@ -507,7 +508,7 @@ class IzzyShould {
         val collection = arrayListOf(Weapon(), Weapon().apply { id = "10" })
 
         val result = `izzy with classes`(Weapon::class.java, Shield::class.java)
-                .serializeItemCollection(collection)
+            .serializeItemCollection(collection)
 
         Then { result equals """{"data":[{"type":"weapons","relationships":{"shield":{"data":null}}},{"id":"10","type":"weapons","relationships":{"shield":{"data":null}}}]}""" }
     }
@@ -516,33 +517,42 @@ class IzzyShould {
     fun `serialize nullable attributes as null values`() {
         val shield = Shield()
         val result = `izzy with classes`(Shield::class.java)
-                .serializeItem(shield)
+            .serializeItem(shield)
         Then { result equals """{"data":{"type":"shields","attributes":{"strength":null}}}""" }
     }
 
     private fun `expected meta`(): HashMap<String, Any?>? {
         return linkedMapOf(
-                "meta_key" to "meta_value",
-                "customObject" to linkedMapOf("value" to "Hello"))
+            "meta_key" to "meta_value",
+            "customObject" to linkedMapOf("value" to "Hello")
+        )
     }
 
     private fun `expected errors`(): Errors {
-        return Errors(arrayListOf(
+        return Errors(
+            arrayListOf(
                 Error(id = "20", code = "123", title = "Error title"),
-                Error(detail = "Error details",
-                        status = "400",
-                        source = Source(pointer = "/data/attributes/key"),
-                        meta = hashMapOf("food" to "hamburger", "drink" to "water")),
-                Error(detail = "Some details",
-                        source = Source(parameter = "Some source parameter",
-                                pointer = "/data/attributes/name"))
-        ))
+                Error(
+                    detail = "Error details",
+                    status = "400",
+                    source = Source(pointer = "/data/attributes/key"),
+                    meta = hashMapOf("food" to "hamburger", "drink" to "water")
+                ),
+                Error(
+                    detail = "Some details",
+                    source = Source(
+                        parameter = "Some source parameter",
+                        pointer = "/data/attributes/name"
+                    )
+                )
+            )
+        )
     }
 
     private fun `expected links`() = Links(
-            self = Link("self-url"),
-            last = Link("url-last"),
-            related = Link("related-url", mapOf("meta_key" to "meta value"))
+        self = Link("self-url"),
+        last = Link("url-last"),
+        related = Link("related-url", mapOf("meta_key" to "meta value"))
     )
 
     private fun `izzy with classes`(vararg classes: Class<out IzzyResource>) =

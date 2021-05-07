@@ -24,11 +24,11 @@ class IzzyRetrofitConverter(val izzy: Izzy) : Converter.Factory() {
         annotations: Array<out Annotation>?,
         retrofit: Retrofit?
     ): Converter<ResponseBody, *>? =
-            when (getJsonType(type)) {
-                COLLECTION -> IzzyCollectionResponseBodyConverter<IzzyResource>(izzy)
-                SINGLE -> IzzyResponseBodyConverter<IzzyResource>(izzy)
-                UNKNOWN -> IzzyInvalidJsonResponseBodyConverter()
-            }
+        when (getJsonType(type)) {
+            COLLECTION -> IzzyCollectionResponseBodyConverter<IzzyResource>(izzy)
+            SINGLE -> IzzyResponseBodyConverter<IzzyResource>(izzy)
+            UNKNOWN -> IzzyInvalidJsonResponseBodyConverter()
+        }
 
     override fun requestBodyConverter(
         type: Type,
@@ -36,10 +36,10 @@ class IzzyRetrofitConverter(val izzy: Izzy) : Converter.Factory() {
         methodAnnotations: Array<out Annotation>?,
         retrofit: Retrofit?
     ): Converter<*, RequestBody>? =
-            when (isResourceCollection(type)) {
-                true -> IzzyCollectionRequestBodyConverter<IzzyResource>(izzy)
-                false -> IzzyRequestBodyConverter<IzzyResource>(izzy)
-            }
+        when (isResourceCollection(type)) {
+            true -> IzzyCollectionRequestBodyConverter<IzzyResource>(izzy)
+            false -> IzzyRequestBodyConverter<IzzyResource>(izzy)
+        }
 
     // We don't handle string types so here we return null to let retrofit know and pass it to another converter
     override fun stringConverter(
@@ -49,12 +49,12 @@ class IzzyRetrofitConverter(val izzy: Izzy) : Converter.Factory() {
     ): Converter<*, String>? = null
 
     private fun getJsonType(type: Type): JsonType =
-            if (isJsonDocument(type)) {
-                val isJsonCollection = (type as ParameterizedType).actualTypeArguments[0].isCollection()
-                if (isJsonCollection) COLLECTION else SINGLE
-            } else {
-                UNKNOWN
-            }
+        if (isJsonDocument(type)) {
+            val isJsonCollection = (type as ParameterizedType).actualTypeArguments[0].isCollection()
+            if (isJsonCollection) COLLECTION else SINGLE
+        } else {
+            UNKNOWN
+        }
 
     private fun isResourceCollection(type: Type) = type.isCollection()
 

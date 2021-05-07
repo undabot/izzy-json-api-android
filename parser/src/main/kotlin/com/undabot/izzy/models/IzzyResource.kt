@@ -10,6 +10,6 @@ open class IzzyResource(
 ) {
     companion object {
         fun from(relationshipData: JsonElements) =
-                IzzyResource(relationshipData.stringFor(ID)!!)
+            IzzyResource(relationshipData.stringFor(ID)!!)
     }
 }

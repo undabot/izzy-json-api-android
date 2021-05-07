@@ -22,13 +22,15 @@ class IzzyCollectionResponseBodyConverterShould {
     private lateinit var responseBody: ResponseBody
     private var izzy: Izzy = Izzy(JacksonParser(IzzyConfiguration(arrayOf(Article::class.java, Person::class.java))))
     private var expectedDocument: JsonDocument<List<IzzyResource>> =
-            JsonDocument(data = arrayListOf(Article("Article title").apply { id = "20" }))
+        JsonDocument(data = arrayListOf(Article("Article title").apply { id = "20" }))
     private lateinit var actualDocument: JsonDocument<List<IzzyResource>>
 
     @Before
     fun prepare() {
-        responseBody = ResponseBody.create(null,
-                """{"data":[{"id":"20","type":"articles","attributes":{"title":"Article title"}}]}""")
+        responseBody = ResponseBody.create(
+            null,
+            """{"data":[{"id":"20","type":"articles","attributes":{"title":"Article title"}}]}"""
+        )
         responseBodyConverter = IzzyCollectionResponseBodyConverter(izzy)
     }
 

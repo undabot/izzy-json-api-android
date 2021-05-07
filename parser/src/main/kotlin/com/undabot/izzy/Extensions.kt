@@ -29,6 +29,8 @@ val Type.rawType: Class<*>
         is GenericArrayType -> ArrayType.newInstance(genericComponentType.rawType, 0).javaClass
         is TypeVariable<*> -> Object::class.java
         is WildcardType -> this.upperBounds[0].rawType
-        else -> throw IllegalArgumentException("Expected a Class, ParameterizedType, or " +
-            "GenericArrayType, but <$this> is of type ${this.javaClass.name}")
+        else -> throw IllegalArgumentException(
+            "Expected a Class, ParameterizedType, or " +
+                "GenericArrayType, but <$this> is of type ${this.javaClass.name}"
+        )
     }

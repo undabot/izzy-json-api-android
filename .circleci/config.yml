@@ -13,7 +13,7 @@ jobs:
           command: ./gradlew clean assemble
       - run:
           name: Static analysis
-          command: ./gradlew ktlint detekt
+          command: ./gradlew ktlintCheck detekt
       - run:
           name: Tests
           command: ./gradlew test

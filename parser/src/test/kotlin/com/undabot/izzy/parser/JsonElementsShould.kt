@@ -151,7 +151,8 @@ abstract class JsonElementsShould {
         Then {
             jsonElements.asMap() equals mapOf(
                 "title" to "Article title",
-                "customObject" to mapOf("value" to "custom value"))
+                "customObject" to mapOf("value" to "custom value")
+            )
         }
     }
 

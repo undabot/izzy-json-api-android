@@ -1,0 +1,12 @@
+// Documentation ktlint: https://github.com/pinterest/ktlint
+// Documentation gradle plugin: https://github.com/jlleitschuh/ktlint-gradle
+apply plugin: "org.jlleitschuh.gradle.ktlint"
+
+ktlint {
+    debug = true
+    version.set("0.40.0")
+    reporters {
+        reporter "html"
+        reporter "plain"
+    }
+}

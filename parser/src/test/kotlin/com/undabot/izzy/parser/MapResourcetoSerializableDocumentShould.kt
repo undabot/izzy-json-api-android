@@ -29,20 +29,22 @@ class MapResourcetoSerializableDocumentShould {
     private val personWithoutId = Person()
 
     private val articleWithAuthors = Article("testArticle")
-            .apply {
-                id = testIdArticle
-                title = articleTitle
-                description = articleDescription
-                author = testPerson
-                coauthors = listOf(testPerson,
-                        secondPerson)
-            }
+        .apply {
+            id = testIdArticle
+            title = articleTitle
+            description = articleDescription
+            author = testPerson
+            coauthors = listOf(
+                testPerson,
+                secondPerson
+            )
+        }
 
     private val personWithArticle = Person(testPersonName)
-            .apply {
-                id = testId
-                favoriteArticle = articleWithAuthors
-            }
+        .apply {
+            id = testId
+            favoriteArticle = articleWithAuthors
+        }
 
     @Test
     fun `extract data from a resource with a single relationship`() {
@@ -105,16 +107,26 @@ class MapResourcetoSerializableDocumentShould {
     }
 
     private fun `serializable document of article with coauthors`(): SerializableDocument {
-        return SerializableDocument(testIdArticle,
-                "articles",
-                mapOf("title" to articleTitle, "description" to articleDescription),
-                mapOf("author" to DataWrapper(ResourceID(testId, "persons")),
-                        "coauthors" to DataWrapper(arrayListOf(ResourceID(testId, "persons"),
-                                ResourceID(testIdSecond, "persons")))))
+        return SerializableDocument(
+            testIdArticle,
+            "articles",
+            mapOf("title" to articleTitle, "description" to articleDescription),
+            mapOf(
+                "author" to DataWrapper(ResourceID(testId, "persons")),
+                "coauthors" to DataWrapper(
+                    arrayListOf(
+                        ResourceID(testId, "persons"),
+                        ResourceID(testIdSecond, "persons")
+                    )
+                )
+            )
+        )
     }
 
     private fun `serializable document of person with favorite article`(): SerializableDocument {
-        return SerializableDocument(testId, "persons", mapOf("name" to testPersonName),
-                mapOf("favoriteArticle" to DataWrapper(ResourceID(testIdArticle, "articles"))))
+        return SerializableDocument(
+            testId, "persons", mapOf("name" to testPersonName),
+            mapOf("favoriteArticle" to DataWrapper(ResourceID(testIdArticle, "articles")))
+        )
     }
 }

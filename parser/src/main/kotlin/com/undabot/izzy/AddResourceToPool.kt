@@ -16,7 +16,8 @@ class AddResourceToPool(private val pool: DataPool) {
      *  Adds resource and it's metadata and relationship data to the DataPool.
      *
      * @param resource a resource object which we'll be adding to pool
-     * @param relationshipsJsonObject part of the JSON ("relationships" object) that has all of the relationship data for this resource
+     * @param relationshipsJsonObject part of the JSON ("relationships" object) that has
+     * all of the relationship data for this resource
      * @param type type for this resource
      *
      */
@@ -24,15 +25,15 @@ class AddResourceToPool(private val pool: DataPool) {
         val id = ResourceID(resource.id!!, type)
         val relationshipFields = RelationshipFields().apply {
             resource::class.java.annotatedWith(Relationship::class.java)
-                    .forEach { relationshipField ->
-                        val relationshipName = relationshipField.getAnnotation(Relationship::class.java).name
+                .forEach { relationshipField ->
+                    val relationshipName = relationshipField.getAnnotation(Relationship::class.java).name
 
-                        if (relationshipsJsonObject.has(relationshipName)) {
-                            val relationshipData = getRelationshipDataFrom(relationshipsJsonObject, relationshipName)
-                            relationshipField.isAccessible = true
-                            addToPool(relationshipData, relationshipField)
-                        }
+                    if (relationshipsJsonObject.has(relationshipName)) {
+                        val relationshipData = getRelationshipDataFrom(relationshipsJsonObject, relationshipName)
+                        relationshipField.isAccessible = true
+                        addToPool(relationshipData, relationshipField)
                     }
+                }
         }
 
         pool.put(id, Pair(ClassInstance(resource::class.java, resource), relationshipFields))
@@ -47,5 +48,5 @@ class AddResourceToPool(private val pool: DataPool) {
     * */
 
     private fun getRelationshipDataFrom(relationshipsObject: JsonElements, name: String) =
-            relationshipsObject.jsonElement(name).jsonElement(DATA)
+        relationshipsObject.jsonElement(name).jsonElement(DATA)
 }

@@ -17,10 +17,12 @@ class ResourceToSerializableDocumentMapper(private val relationshipFieldMapper: 
         val fields = resource.nonNullFields()
             .groupBy { it.first.isAnnotationPresent(Relationship::class.java) }
 
-        return SerializableDocument(resource.id,
+        return SerializableDocument(
+            resource.id,
             resource::class.java.getAnnotation(Type::class.java).type,
             getAttributesFor(fields, resource),
-            createRelationshipsFor(fields[true] ?: emptyList()))
+            createRelationshipsFor(fields[true] ?: emptyList())
+        )
     }
 
     private fun <T : IzzyResource> getAttributesFor(
