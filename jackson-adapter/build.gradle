@@ -3,13 +3,13 @@ repositories {
 }
 
 dependencies {
-    implementation project(":parser")
+    api project(":parser")
 
-    implementation libraries.kotlinStdLib
-    implementation libraries.jacksonCore
-    implementation libraries.jacksonAnnotations
-    implementation libraries.jacksonDatabind
-    implementation libraries.jacksonModuleKotlin
+    api libraries.kotlinStdLib
+    api libraries.jacksonCore
+    api libraries.jacksonAnnotations
+    api libraries.jacksonDatabind
+    api libraries.jacksonModuleKotlin
 
     testImplementation project(path: ":parser", configuration: "testOutput")
     testImplementation libraries.mockitoKotlin
