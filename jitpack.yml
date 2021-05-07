@@ -1,0 +1,4 @@
+before_install:
+  - ./gradlew clean
+install:
+  - ./gradlew build install
