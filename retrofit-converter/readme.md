@@ -1,12 +1,12 @@
-## Usage
+# Usage
 
-**Add gradle dependency**
+## Add gradle dependency
 
+```groovy
+implementation 'com.github.undabot.izzy-json-api-android:retrofit-converter:<version>'
 ```
-TODO add maven
-```
 
-**Create Izzy Retrofit converter**
+## Create Izzy Retrofit converter
 
 ```kotlin
 val izzyConfiguration = IzzyConfiguration(
@@ -18,7 +18,7 @@ val izzy = Izzy(parser)
 val izzyRetrofitConverter = IzzyRetrofitConverter(izzy)
 ```
 
-**Add as Converter factory to Retrofit**
+## Add as Converter factory to Retrofit
 
 ```kotlin
 val retrofit = Retrofit.Builder()

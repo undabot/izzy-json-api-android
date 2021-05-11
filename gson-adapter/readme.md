@@ -1,13 +1,12 @@
-## Usage
+# Usage
 
-**Add gradle dependency**
+## Add gradle dependency**
 
+```groovy
+implementation 'com.github.undabot.izzy-json-api-android:gson-adapter:<version>'
 ```
-TODO add maven
-```
 
-
-**Create Izzy with Gson**
+## Create Izzy with Gson**
 
 ```kotlin
 val izzyConfiguration = IzzyConfiguration(
