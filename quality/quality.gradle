@@ -1,0 +1,34 @@
+repositories {
+    jcenter()
+}
+
+configurations {
+    ktlint
+}
+
+dependencies {
+    ktlint "com.pinterest:ktlint:0.33.0"
+}
+
+check.dependsOn 'ktlint'
+
+detekt {
+    toolVersion = "1.0.0-RC16"
+    input = files("$projectDir")
+    config = files("../quality/detekt.yml")
+    parallel = true
+}
+
+// see https://github.com/pinterest/ktlint for more
+task ktlint(type: JavaExec, group: "verification") {
+    description = "Check Kotlin code style."
+    main = "com.pinterest.ktlint.Main"
+    classpath = configurations.ktlint
+}
+
+task ktlintFormat(type: JavaExec, group: "formatting") {
+    description = "Fix Kotlin code style deviations."
+    main = "com.pinterest.ktlint.Main"
+    classpath = configurations.ktlint
+    args "-F"
+}

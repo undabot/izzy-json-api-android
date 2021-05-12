@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/izzy-json-api-android
     docker:
-      - image: circleci/android:api-25-alpha
+      - image: circleci/android:api-28-alpha
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
@@ -11,9 +11,25 @@ jobs:
       - run:
           name: Build
           command: ./gradlew clean assemble
+  static_analysis:
+    working_directory: ~/izzy-json-api-android
+    docker:
+      - image: circleci/android:api-28-alpha
+    environment:
+      JVM_OPTS: -Xmx3200m
+    steps:
+      - checkout
       - run:
           name: Static analysis
           command: ./gradlew ktlintCheck detekt
+  tests:
+    working_directory: ~/izzy-json-api-android
+    docker:
+      - image: circleci/android:api-28-alpha
+    environment:
+      JVM_OPTS: -Xmx3200m
+    steps:
+      - checkout
       - run:
           name: Tests
           command: ./gradlew test
@@ -22,3 +38,10 @@ jobs:
           destination: reports
       - store_test_results:
           path: build/test-results
+workflows:
+  version: 2
+  pipeline:
+    jobs:
+      - build
+      - static_analysis
+      - tests
