@@ -1,5 +1,3 @@
-apply plugin: 'com.novoda.bintray-release'
-
 repositories {
     jcenter()
 }
@@ -21,16 +19,4 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-publish {
-    userOrg = "$bintrayPublish.userOrg"
-    groupId = "$bintrayPublish.groupId"
-    repoName = "$bintrayPublish.repoName"
-    artifactId = 'retrofit-converter'
-    publishVersion = "$bintrayPublish.publishVersion"
-    bintrayKey = "$bintrayPublish.key"
-    bintrayUser = "$bintrayPublish.user"
-    desc = 'Retrofit Converter for Izzy parser'
-    website = "$bintrayPublish.githubLink"
 }
