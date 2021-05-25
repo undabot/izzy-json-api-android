@@ -1,0 +1,71 @@
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+// Load local signing values if available
+File secretPropsFile = project.rootProject.file('local.properties')
+if (secretPropsFile.exists()) {
+    Properties p = new Properties()
+    p.load(new FileInputStream(secretPropsFile))
+    p.each { name, value ->
+        ext[name] = value
+    }
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            pom {
+                groupId = GROUP
+                url = POM_URL
+                licenses {
+                    license {
+                        name = POM_LICENCE_NAME
+                        url = POM_LICENCE_URL
+                    }
+                }
+                developers {
+                    developer {
+                        id = POM_DEVELOPER_ID
+                        name = POM_DEVELOPER_NAME
+                        email = POM_DEVELOPER_URL
+                    }
+                }
+                scm {
+                    connection = POM_SCM_CONNECTION
+                    developerConnection = POM_SCM_DEV_CONNECTION
+                    url = POM_SCM_URL
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            credentials {
+                username = System.getenv('NEXUS_USERNAME') ?: ''
+                password = System.getenv('NEXUS_PASSWORD') ?: ''
+            }
+            name = "izzy-json-api"
+
+            def releasesRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/releases/'
+            def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+        }
+    }
+}
+
+signing {
+    def inMemorySigningKey = System.getenv('SIGNING_SECRET_KEY_RING_CONTENT') ?: ''
+    if (!inMemorySigningKey.isEmpty()) {
+        // Use in memory PGP key content if available
+        def signingKeyPassword = System.getenv('SIGNING_SECRET_KEY_PASSWORD') ?: ''
+        useInMemoryPgpKeys(inMemorySigningKey, signingKeyPassword)
+    }
+    sign publishing.publications.mavenJava
+}
