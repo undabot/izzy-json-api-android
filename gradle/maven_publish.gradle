@@ -51,7 +51,7 @@ publishing {
                 username = System.getenv('NEXUS_USERNAME') ?: ''
                 password = System.getenv('NEXUS_PASSWORD') ?: ''
             }
-            name = "izzy-json-api"
+            name = "izzy-json-api-android"
             version = VERSION_NAME
 
             def releasesRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/releases/'
