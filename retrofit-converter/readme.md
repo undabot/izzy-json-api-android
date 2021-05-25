@@ -3,7 +3,7 @@
 ## Add gradle dependency
 
 ```groovy
-implementation 'com.undabot.izzy-json-api:retrofit-converter:<version>'
+implementation 'com.undabot.izzy-json-api-android:retrofit-converter:<version>'
 ```
 
 ## Create Izzy Retrofit converter
