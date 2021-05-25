@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/undabot/izzy-json-api-android/tree/master.svg?style=shield)](https://circleci.com/gh/undabot/izzy-json-api-android/tree/master)
+![Pipeline workflow](https://github.com/undabot/izzy-json-api-android/actions/workflows/ci.yaml/badge.svg)
 [![](https://jitpack.io/v/undabot/izzy-json-api-android.svg)](https://jitpack.io/#undabot/izzy-json-api-android)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.undabot.izzy-json-api/parser/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.undabot.izzy-json-api/parser)
 
