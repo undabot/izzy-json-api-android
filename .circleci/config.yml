@@ -56,11 +56,17 @@ workflows:
       - build
       - static_analysis
       - tests
+  release:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+(-SNAPSHOT)?$/
+            branches:
+              ignore: /.*/
       - deploy_maven:
           requires:
             - build
-            - static_analysis
-            - tests
           filters:
             tags:
               only: /^\d+\.\d+\.\d+(-SNAPSHOT)?$/
