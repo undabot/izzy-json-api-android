@@ -1,9 +1,11 @@
-name: CI
+name: Release
 
-on: [push, pull_request]
+on:
+  release:
+    types: [published]
 
 jobs:
-  pipeline:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -21,11 +23,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       - name: Build
-        run: ./gradlew clean assemble
-      - name: Static analysis
-        run: ./gradlew ktlintCheck detekt
-      - name: Tests
-        run: ./gradlew test
+        run: ./gradlew clean build
+      - name: Deploy to Maven
+        env:
+          SIGNING_SECRET_KEY_PASSWORD: ${{ secrets.SIGNING_SECRET_KEY_PASSWORD }}
+          SIGNING_SECRET_KEY_RING_CONTENT: ${{ secrets.SIGNING_SECRET_KEY_RING_CONTENT }}
+          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+          NEXYS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+        run: ./gradlew publish
       - name: Cleanup Gradle Cache
         # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
         # Restoring these files from a GitHub Actions cache might cause problems for future builds.
@@ -33,10 +38,3 @@ jobs:
         run: |
           rm -f ~/.gradle/caches/modules-2/modules-2.lock
           rm -f ~/.gradle/caches/modules-2/gc.properties
-      - name: Upload test reports
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: unitTestReports
-          path: |
-            build/reports
