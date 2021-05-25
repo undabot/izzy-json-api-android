@@ -56,22 +56,13 @@ workflows:
       - build
       - static_analysis
       - tests
-      - hold:
-          type: approval
+      - deploy_maven:
           requires:
             - build
             - static_analysis
             - tests
           filters:
+            tags:
+              only: /^\d+\.\d+\.\d+(-SNAPSHOT)?$/
             branches:
-              only:
-                - master
-                - develop
-      - deploy_maven:
-          requires:
-            - hold
-          filters:
-            branches:
-              only:
-                - master
-                - develop
+              ignore: /.*/
