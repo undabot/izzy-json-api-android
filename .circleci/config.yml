@@ -38,6 +38,17 @@ jobs:
           destination: reports
       - store_test_results:
           path: build/test-results
+  deploy_maven:
+    working_directory: ~/izzy-json-api-android
+    docker:
+      - image: circleci/android:api-28-alpha
+    environment:
+      JVM_OPTS: -Xmx3200m
+    steps:
+      - checkout
+      - run:
+          name: Publish to Maven
+          command: ./gradlew clean build publish
 workflows:
   version: 2
   pipeline:
@@ -45,3 +56,22 @@ workflows:
       - build
       - static_analysis
       - tests
+      - hold:
+          type: approval
+          requires:
+            - build
+            - static_analysis
+            - tests
+          filters:
+            branches:
+              only:
+                - master
+                - develop
+      - deploy_maven:
+          requires:
+            - hold
+          filters:
+            branches:
+              only:
+                - master
+                - develop
