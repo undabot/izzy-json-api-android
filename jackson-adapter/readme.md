@@ -3,7 +3,7 @@
 ## Add gradle dependency
 
 ```groovy
-implementation 'com.github.undabot.izzy-json-api-android:jackson-adapter:<version>'
+implementation 'com.undabot.izzy-json-api-android:jackson-adapter:<version>'
 ```
 
 ## Create Izzy with Jackson

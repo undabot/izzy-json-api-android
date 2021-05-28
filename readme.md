@@ -1,5 +1,6 @@
-[![CircleCI](https://circleci.com/gh/undabot/izzy-json-api-android/tree/master.svg?style=shield)](https://circleci.com/gh/undabot/izzy-json-api-android/tree/master)
+![Pipeline workflow](https://github.com/undabot/izzy-json-api-android/actions/workflows/ci.yaml/badge.svg)
 [![](https://jitpack.io/v/undabot/izzy-json-api-android.svg)](https://jitpack.io/#undabot/izzy-json-api-android)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.undabot.izzy-json-api-android/parser/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.undabot.izzy-json-api-android/parser)
 
 # JSON-API Docs
 
@@ -15,11 +16,12 @@ We’ve built it to work together with your favourite JSON parsers, be it Gson, 
 
 ## How to set it up:
 
-1. Add JitPack repository to root project `build.gradle` file:
+1. Add JitPack or MavenCentral repository to root project `build.gradle` file:
 ```groovy
 allprojects {
     repositories {
         ...
+        mavenCentral()
         maven { url 'https://jitpack.io' }
     }
 }
@@ -29,11 +31,11 @@ allprojects {
 
 Jackson:
 ```groovy
-implementation 'com.github.undabot.izzy-json-api-android:jackson-adapter:<version>'
+implementation 'com.undabot.izzy-json-api-android:jackson-adapter:<version>'
 ```
 Gson
 ```groovy
-implementation 'com.github.undabot.izzy-json-api-android:gson-adapter:<version>'
+implementation 'com.undabot.izzy-json-api-android:gson-adapter:<version>'
 ```
 
 3. Register the types you want or need.
@@ -71,7 +73,7 @@ implementation 'com.github.undabot.izzy-json-api-android:gson-adapter:<version>'
 5. Add a Retrofit plugin if you use Retrofit (or don’t if you don’t)
 
 ```groovy
-implementation 'com.github.undabot.izzy-json-api-android:retrofit-converter:<version>'
+implementation 'com.undabot.izzy-json-api-android:retrofit-converter:<version>'
 ```
 
 And you’re ready to be JSON-API Compliant!
