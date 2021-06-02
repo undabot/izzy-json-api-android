@@ -1,6 +1,10 @@
 ![Pipeline workflow](https://github.com/undabot/izzy-json-api-android/actions/workflows/ci.yaml/badge.svg)
-[![](https://jitpack.io/v/undabot/izzy-json-api-android.svg)](https://jitpack.io/#undabot/izzy-json-api-android)
+![Kotlin](https://img.shields.io/badge/platform-kotlin-lightgrey)
+![Android](https://img.shields.io/badge/platform-android-green)
+![License](https://img.shields.io/github/license/undabot/izzy-json-api-android)
+
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.undabot.izzy-json-api-android/parser/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.undabot.izzy-json-api-android/parser)
+[![](https://jitpack.io/v/undabot/izzy-json-api-android.svg)](https://jitpack.io/#undabot/izzy-json-api-android)
 
 # JSON-API Docs
 
