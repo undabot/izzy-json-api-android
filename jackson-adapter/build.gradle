@@ -1,5 +1,3 @@
-apply plugin: 'com.novoda.bintray-release'
-
 repositories {
     jcenter()
 }
@@ -23,16 +21,4 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-publish {
-    userOrg = "$bintrayPublish.userOrg"
-    groupId = "$bintrayPublish.groupId"
-    repoName = "$bintrayPublish.repoName"
-    artifactId = 'jackson-adapter'
-    publishVersion = "$bintrayPublish.publishVersion"
-    bintrayKey = "$bintrayPublish.key"
-    bintrayUser = "$bintrayPublish.user"
-    desc = 'Jackson adapter for Izzy JSONAPI parser'
-    website = "$bintrayPublish.githubLink"
 }
