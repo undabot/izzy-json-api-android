@@ -7,7 +7,7 @@ import okhttp3.ResponseBody
 import retrofit2.Converter
 
 class IzzyResponseBodyConverter<T : IzzyResource>(
-    val izzy: Izzy
+    private val izzy: Izzy
 ) : Converter<ResponseBody, JsonDocument<T>> {
 
     override fun convert(value: ResponseBody): JsonDocument<T> =

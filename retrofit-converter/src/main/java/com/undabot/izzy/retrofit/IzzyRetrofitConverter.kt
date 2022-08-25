@@ -21,9 +21,9 @@ class IzzyRetrofitConverter(val izzy: Izzy) : Converter.Factory() {
 
     override fun responseBodyConverter(
         type: Type,
-        annotations: Array<out Annotation>?,
-        retrofit: Retrofit?
-    ): Converter<ResponseBody, *>? =
+        annotations: Array<out Annotation>,
+        retrofit: Retrofit
+    ): Converter<ResponseBody, *> =
         when (getJsonType(type)) {
             COLLECTION -> IzzyCollectionResponseBodyConverter<IzzyResource>(izzy)
             SINGLE -> IzzyResponseBodyConverter<IzzyResource>(izzy)
@@ -32,10 +32,10 @@ class IzzyRetrofitConverter(val izzy: Izzy) : Converter.Factory() {
 
     override fun requestBodyConverter(
         type: Type,
-        parameterAnnotations: Array<out Annotation>?,
-        methodAnnotations: Array<out Annotation>?,
-        retrofit: Retrofit?
-    ): Converter<*, RequestBody>? =
+        parameterAnnotations: Array<out Annotation>,
+        methodAnnotations: Array<out Annotation>,
+        retrofit: Retrofit
+    ): Converter<*, RequestBody> =
         when (isResourceCollection(type)) {
             true -> IzzyCollectionRequestBodyConverter<IzzyResource>(izzy)
             false -> IzzyRequestBodyConverter<IzzyResource>(izzy)
@@ -43,9 +43,9 @@ class IzzyRetrofitConverter(val izzy: Izzy) : Converter.Factory() {
 
     // We don't handle string types so here we return null to let retrofit know and pass it to another converter
     override fun stringConverter(
-        type: Type?,
-        annotations: Array<out Annotation>?,
-        retrofit: Retrofit?
+        type: Type,
+        annotations: Array<out Annotation>,
+        retrofit: Retrofit
     ): Converter<*, String>? = null
 
     private fun getJsonType(type: Type): JsonType =
