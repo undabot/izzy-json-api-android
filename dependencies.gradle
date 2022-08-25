@@ -1,11 +1,11 @@
-ext.versions = [
-        gson         : "2.8.5",
-        jackson      : "2.9.6",
-        retrofit     : "2.6.0",
+ext {
+    gson = "2.8.5"
+    jackson = "2.9.6"
+    retrofit = "2.6.0"
 
-        mockitoKotlin: "1.5.0",
-        junit        : "4.12"
-]
+    mockitoKotlin = "1.5.0"
+    junit = "4.12"
+}
 
 ext.libraries = [
         kotlinStdLib       : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version",
