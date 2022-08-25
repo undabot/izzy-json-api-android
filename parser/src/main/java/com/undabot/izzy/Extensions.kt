@@ -22,6 +22,19 @@ fun <T : IzzyResource> T.nonNullFields() =
         .filter { it.isAnnotationPresent(Nullable::class.java) || it.get(this) != null }
         .map { Pair(it, it.get(this)) }
 
+fun Any.applyAction(action: (Any?) -> Unit) {
+    if (this.javaClass.isArray) {
+        (this as Array<*>).forEach {
+            action(it)
+        }
+    } else if (this is Collection<*>) {
+        this.forEach {
+            action(it)
+        }
+    } else
+        action(this)
+}
+
 val Type.rawType: Class<*>
     get() = when (this) {
         is Class<*> -> this

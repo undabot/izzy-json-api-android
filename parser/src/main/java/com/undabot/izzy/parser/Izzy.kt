@@ -68,8 +68,12 @@ class Izzy(private val izzyJsonParser: IzzyJsonParser) {
      * @param item item to serialize.
      */
     fun <T : IzzyResource> serializeItem(item: T): String {
+        val serializer = ResourceToSerializableDocumentMapper(RelationshipFieldMapper())
+        val data = serializer.mapFrom(item)
+
         val document = JsonDocument(
-            ResourceToSerializableDocumentMapper(RelationshipFieldMapper()).mapFrom(item)
+            data = data.toData(),
+            included = data.getIncludedList()
         )
         return izzyJsonParser.documentToJson(document).replace(nullableField(), nullValue())
     }

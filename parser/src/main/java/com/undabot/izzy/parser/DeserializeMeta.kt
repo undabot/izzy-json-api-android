@@ -1,5 +1,6 @@
 package com.undabot.izzy.parser
 
+@Suppress("UNCHECKED_CAST")
 class DeserializeMeta {
 
     fun fromRoot(jsonElements: JsonElements): Map<String, Any?>? {

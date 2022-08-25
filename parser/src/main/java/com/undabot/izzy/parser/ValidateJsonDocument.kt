@@ -5,7 +5,7 @@ import com.undabot.izzy.exceptions.InvalidJsonDocumentException
 class ValidateJsonDocument {
 
     fun from(jsonElements: JsonElements) {
-        when (true) {
+        when {
             rootIsNotObjectIn(jsonElements) -> throwRootNotObjectException()
             missingTopLevelMembersIn(jsonElements) -> throwMissingTopLevelMembersException()
             containsBothDataAndErrorsIn(jsonElements) -> throwBothDataAndErrorsIncludedException()

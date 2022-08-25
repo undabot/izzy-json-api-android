@@ -22,7 +22,7 @@ class AddResourceToPool(private val pool: DataPool) {
      *
      */
     fun <T : IzzyResource> resourceWithRelationships(resource: T, relationshipsJsonObject: JsonElements, type: String) {
-        val id = ResourceID(resource.id!!, type)
+        val id = ResourceID(resource.id!!, type, resource.method, resource.tempId)
         val relationshipFields = RelationshipFields().apply {
             resource::class.java.annotatedWith(Relationship::class.java)
                 .forEach { relationshipField ->

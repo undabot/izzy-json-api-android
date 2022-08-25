@@ -24,7 +24,15 @@ class RelationshipFieldMapper {
 
     private fun resourceIdFromResource(fieldInstance: Pair<Field, Any?>): DataWrapper {
         return if (fieldInstance.second != null) {
-            DataWrapper(ResourceID((fieldInstance.second as IzzyResource).id!!, type(fieldInstance.first.type)))
+            val resource = (fieldInstance.second as IzzyResource)
+            DataWrapper(
+                ResourceID(
+                    resource.id,
+                    type(fieldInstance.first.type),
+                    resource.method,
+                    resource.tempId
+                )
+            )
         } else {
             DataWrapper(DataWrapper.NULLABLE_FIELD)
         }
@@ -37,7 +45,9 @@ class RelationshipFieldMapper {
             name to DataWrapper(emptyList<Any>())
         } else {
             val type = type(list.first().javaClass)
-            name to DataWrapper(list.map { ResourceID(it.id!!, type) })
+            name to DataWrapper(list.map {
+                ResourceID(it.id, type, it.method, it.tempId)
+            })
         }
     }
 
