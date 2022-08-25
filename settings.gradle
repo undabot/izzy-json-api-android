@@ -1,6 +1,19 @@
-rootProject.name = 'izzy'
-include 'parser'
-include 'gson-adapter'
-include 'jackson-adapter'
-include 'retrofit-converter'
-
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "IzzyGraffiti"
+include ':sample'
+include ':parser'
+include ':gson-adapter'
+include ':retrofit-converter'
